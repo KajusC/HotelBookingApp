@@ -7,10 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="DTO\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Models\" />
-    <Folder Include="Data\" />
-    <Folder Include="Repositories\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +19,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.61.0" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HotelBookingApp.Model\HotelBookingApp.Data.csproj" />
   </ItemGroup>
 
 </Project>

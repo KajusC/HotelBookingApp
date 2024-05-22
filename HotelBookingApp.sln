@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBookingApp.Server", "H
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "hotelbookingapp.client", "hotelbookingapp.client\hotelbookingapp.client.esproj", "{2C865EFC-DEE4-4C98-83A6-8ABC10DF4368}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBookingApp.Model", "HotelBookingApp.Model\HotelBookingApp.Model.csproj", "{D0839F91-4283-4244-AC2F-168AA1D41B17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBookingApp.Data", "HotelBookingApp.Model\HotelBookingApp.Data.csproj", "{D0839F91-4283-4244-AC2F-168AA1D41B17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBookingApp.View", "HotelBookingApp.View\HotelBookingApp.View.csproj", "{471A3A39-8B4D-4ED1-B35C-0B89C4BC2442}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBookingApp.Business", "HotelBookingApp.View\HotelBookingApp.Business.csproj", "{471A3A39-8B4D-4ED1-B35C-0B89C4BC2442}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
