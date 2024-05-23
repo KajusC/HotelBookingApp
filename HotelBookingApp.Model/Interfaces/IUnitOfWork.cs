@@ -1,14 +1,13 @@
-﻿namespace HotelBookingApp.Model.Interfaces;
+﻿namespace HotelBookingApp.Data.Interfaces;
 
 public interface IUnitOfWork
 {
     
-    ICustomerRepository Customers { get; }
-    IFoodRepository Foods { get; }
-    IFoodCategoryRepository FoodCategories { get; }
-    IHotelRepository Hotels { get; }
-    IOrderRepository Orders { get; }
-    IRoomRepository Rooms { get; }
-    IRoomTypeRepository RoomTypes { get; }
+    ICustomerRepository CustomerRepository { get; }
+    IFoodRepository FoodRepository { get; }
+    IHotelRepository HotelRepository { get; }
+    IOrderRepository OrderRepository { get; }
+    IRoomRepository RoomRepository { get; }
+    IRoomTypeRepository RoomTypeRepository { get; }
     Task SaveChangesAsync();
 }

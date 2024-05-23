@@ -1,6 +1,6 @@
-﻿using HotelBookingApp.Model.Models;
+﻿using HotelBookingApp.Data.Models;
 
-namespace HotelBookingApp.Model.Interfaces;
+namespace HotelBookingApp.Data.Interfaces;
 
 public interface IOrderRepository : IRepository<Order>
 {

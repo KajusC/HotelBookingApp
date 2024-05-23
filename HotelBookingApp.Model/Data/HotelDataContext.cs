@@ -1,53 +1,52 @@
-﻿using HotelBookingApp.Model.Models;
+﻿using HotelBookingApp.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelBookingApp.Model.Data;
-
-public class HotelDataContext : DbContext
+namespace HotelBookingApp.Data.Data
 {
-
-    public HotelDataContext(DbContextOptions options) : base(options)
+    public class HotelDataContext : DbContext
     {
+        public HotelDataContext(DbContextOptions<HotelDataContext> options) : base(options) { }
 
-    }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Food> Foods { get; set; }
+        public DbSet<Hotel> Hotels { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<RoomType> RoomTypes { get; set; }
 
-    public DbSet<Customer> Customers { get; set; }
-    public DbSet<Food> Foods { get; set; }
-    public DbSet<FoodCategory> FoodCategories { get; set; }
-    public DbSet<Hotel> Hotels { get; set; }
-    public DbSet<Order> Orders { get; set; }
-    public DbSet<Room> Rooms { get; set; }
-    public DbSet<RoomType> RoomTypes { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Room>()
+                .HasOne(r => r.RoomType)
+                .WithMany(rt => rt.Rooms)
+                .HasForeignKey(r => r.RoomTypeId);
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Room>()
-            .HasOne(r => r.RoomType)
-            .WithMany(rt => rt.Rooms)
-            .HasForeignKey(r => r.RoomTypeId);
+            modelBuilder.Entity<Room>()
+                .HasOne(r => r.Hotel)
+                .WithMany(h => h.Rooms)
+                .HasForeignKey(r => r.HotelId);
 
-        modelBuilder.Entity<Order>()
-            .HasOne(o => o.Customer)
-            .WithMany(c => c.Orders)
-            .HasForeignKey(o => o.CustomerId);
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.Rooms)
+                .WithMany(r => r.Orders);
 
-        modelBuilder.Entity<Order>()
-            .HasOne(o => o.Room)
-            .WithMany(r => r.Orders)
-            .HasForeignKey(o => o.RoomId);
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.Foods)
+                .WithMany(f => f.Orders);
 
-        modelBuilder.Entity<Order>()
-            .HasOne(o => o.Food)
-            .WithMany(f => f.Orders)
-            .HasForeignKey(o => o.FoodId);
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Customer)
+                .WithMany(c => c.Orders)
+                .HasForeignKey(o => o.CustomerId);
 
-        modelBuilder.Entity<Food>()
-            .HasOne(f => f.FoodCategory)
-            .WithMany(fc => fc.Foods)
-            .HasForeignKey(f => f.FoodCategoryId);
-        modelBuilder.Entity<Hotel>()
-            .HasMany(h => h.Rooms)
-            .WithOne(r => r.Hotel)
-            .HasForeignKey(r => r.HotelId);
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Hotel)
+                .WithMany(h => h.Orders)
+                .HasForeignKey(o => o.HotelId);
+
+            modelBuilder.Entity<Hotel>()
+                .HasMany(h => h.Foods)
+                .WithMany(o => o.Hotels);
+        }
     }
 }

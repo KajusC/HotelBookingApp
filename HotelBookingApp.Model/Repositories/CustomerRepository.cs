@@ -1,9 +1,9 @@
-﻿using HotelBookingApp.Model.Data;
-using HotelBookingApp.Model.Interfaces;
-using HotelBookingApp.Model.Models;
+﻿using HotelBookingApp.Data.Data;
+using HotelBookingApp.Data.Interfaces;
+using HotelBookingApp.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelBookingApp.Model.Repositories;
+namespace HotelBookingApp.Data.Repositories;
 
 public class CustomerRepository : ICustomerRepository
 {
@@ -19,26 +19,30 @@ public class CustomerRepository : ICustomerRepository
 
     public async Task<IEnumerable<Customer>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _customerSet.ToListAsync();
     }
 
     public async Task<Customer> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _customerSet.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<bool> AddAsync(Customer entity)
     {
-        throw new NotImplementedException();
+        await _customerSet.AddAsync(entity);
+        return await _context.SaveChangesAsync() > 0;
     }
 
     public async Task<bool> UpdateAsync(Customer entity)
     {
-        throw new NotImplementedException();
+        _customerSet.Update(entity);
+        return await _context.SaveChangesAsync() > 0;
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var customer = await GetByIdAsync(id);
+        _customerSet.Remove(customer);
+        return await _context.SaveChangesAsync() > 0;
     }
 }

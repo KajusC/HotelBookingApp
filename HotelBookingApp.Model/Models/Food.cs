@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HotelBookingApp.Model.Models;
+namespace HotelBookingApp.Data.Models;
 
 public class Food : BaseEntity
 {
@@ -8,10 +8,8 @@ public class Food : BaseEntity
     public string Description { get; set; }
     public decimal Price { get; set; }
     public string ImageUrl { get; set; }
-
-    [ForeignKey("FoodCategoryId")]
+    
     public int FoodCategoryId { get; set; }
-    public FoodCategory FoodCategory { get; set; }
-
     public ICollection<Order> Orders { get; set; }
+    public ICollection<Hotel> Hotels { get; set; }
 }

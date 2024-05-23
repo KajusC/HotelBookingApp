@@ -1,7 +1,10 @@
-﻿namespace HotelBookingApp.Data.Models;
+﻿using HotelBookingApp.Data.Models;
 
-public class Hotel : BaseEntity
+namespace HotelBookingApp.Business.DTO;
+
+public class HotelModel
 {
+    public int Id { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
     public string City { get; set; }
@@ -11,8 +14,7 @@ public class Hotel : BaseEntity
     public string Website { get; set; }
     public string Description { get; set; }
     public string ImageUrl { get; set; }
-
-    public ICollection<Room> Rooms { get; set; }
-    public ICollection<Order> Orders { get; set; }
-    public ICollection<Food> Foods { get; set; }
+    public ICollection<int>? RoomIds { get; set; }
+    public ICollection<int>? OrderIds { get; set; }
+    public ICollection<int>? FoodIds { get; set; }
 }

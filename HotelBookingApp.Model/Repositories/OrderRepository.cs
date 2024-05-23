@@ -1,9 +1,9 @@
-﻿using HotelBookingApp.Model.Data;
-using HotelBookingApp.Model.Interfaces;
-using HotelBookingApp.Model.Models;
+﻿using HotelBookingApp.Data.Data;
+using HotelBookingApp.Data.Interfaces;
+using HotelBookingApp.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelBookingApp.Model.Repositories;
+namespace HotelBookingApp.Data.Repositories;
 
 public class OrderRepository : IOrderRepository
 {
