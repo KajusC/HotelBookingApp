@@ -36,9 +36,9 @@ public class OrderService : IOrderService
         return await _orderRepository.AddAsync(order);
     }
 
-    public async Task<bool> UpdateAsync(int id, OrderModel model)
+    public async Task<bool> UpdateAsync(OrderModel model)
     {
-        var currentOrder = await _orderRepository.GetByIdAsync(id);
+        var currentOrder = await _orderRepository.GetByIdAsync(model.Id);
         if (currentOrder == null)
         {
             return false;

@@ -10,7 +10,7 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(HotelDataContext context)
     {
         _context = context;
-        CustomerRepository = new CustomerRepository(context);
+        UserRepository = new UserRepository(context);
         FoodRepository = new FoodRepository(context);
         HotelRepository = new HotelRepository(context);
         OrderRepository = new OrderRepository(context);
@@ -24,7 +24,7 @@ public class UnitOfWork : IUnitOfWork
         await _context.SaveChangesAsync();
     }
 
-    public ICustomerRepository CustomerRepository { get; } 
+    public IUserRepository UserRepository { get; } 
     public IFoodRepository FoodRepository { get; }
     public IHotelRepository HotelRepository { get; }
     public IOrderRepository OrderRepository { get; }

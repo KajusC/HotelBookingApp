@@ -8,6 +8,6 @@ public class FoodModel
     public decimal Price { get; set; }
     public string ImageUrl { get; set; }
     public int FoodCategoryId { get; set; }
-    public ICollection<int>? OrderIds { get; set; }
-    public ICollection<int>? HotelIds { get; set; }
+    public ICollection<int>? OrderIds { get; set; } = new List<int>();
+    public ICollection<int>? HotelIds { get; set; } = new List<int>();
 }

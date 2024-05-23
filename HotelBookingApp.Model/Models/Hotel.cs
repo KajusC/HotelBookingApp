@@ -12,7 +12,7 @@ public class Hotel : BaseEntity
     public string Description { get; set; }
     public string ImageUrl { get; set; }
 
-    public ICollection<Room> Rooms { get; set; }
-    public ICollection<Order> Orders { get; set; }
-    public ICollection<Food> Foods { get; set; }
+    public ICollection<Room> Rooms { get; set; } = new List<Room>();
+    public ICollection<Order> Orders { get; set; } = new List<Order>();
+    public ICollection<Food> Foods { get; set; } = new List<Food>();
 }

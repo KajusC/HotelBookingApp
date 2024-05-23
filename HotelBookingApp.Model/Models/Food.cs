@@ -10,6 +10,6 @@ public class Food : BaseEntity
     public string ImageUrl { get; set; }
     
     public int FoodCategoryId { get; set; }
-    public ICollection<Order> Orders { get; set; }
-    public ICollection<Hotel> Hotels { get; set; }
+    public ICollection<Order> Orders { get; set; } = new List<Order>();
+    public ICollection<Hotel> Hotels { get; set; } = new List<Hotel>();
 }

@@ -2,6 +2,7 @@
 using HotelBookingApp.Business.DTO;
 using HotelBookingApp.Business.Interfaces;
 using HotelBookingApp.Data.Interfaces;
+using HotelBookingApp.Data.Models;
 
 namespace HotelBookingApp.Business.Services;
 
@@ -19,26 +20,36 @@ public class RoomService : IRoomService
     }
     public async Task<IEnumerable<RoomModel>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var rooms = await _roomRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<RoomModel>>(rooms);
     }
 
     public async Task<RoomModel> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var room = await _roomRepository.GetByIdAsync(id);
+        return _mapper.Map<RoomModel>(room);
     }
 
     public async Task<bool> AddAsync(RoomModel model)
     {
-        throw new NotImplementedException();
+        var room = _mapper.Map<Room>(model);
+        return await _roomRepository.AddAsync(room);
     }
 
-    public async Task<bool> UpdateAsync(int id, RoomModel model)
+    public async Task<bool> UpdateAsync(RoomModel model)
     {
-        throw new NotImplementedException();
+        var currentRoom = await _roomRepository.GetByIdAsync(model.Id);
+        if (currentRoom == null)
+        {
+            return false;
+        }
+
+        _mapper.Map(model, currentRoom);
+        return await _roomRepository.UpdateAsync(currentRoom);
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _roomRepository.DeleteAsync(id);
     }
 }

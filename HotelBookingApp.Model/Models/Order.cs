@@ -10,7 +10,7 @@ public class Order : BaseEntity
     public DateTime CheckOutDate { get; set; }
     public string Status { get; set; }
     public int CustomerId { get; set; }
-    public Customer Customer { get; set; }
-    public ICollection<Food> Foods { get; set; }
-    public ICollection<Room> Rooms { get; set; }
+    public User User { get; set; }
+    public ICollection<Food> Foods { get; set; } = new List<Food>();
+    public ICollection<Room> Rooms { get; set; } = new List<Room>();
 }

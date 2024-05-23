@@ -14,7 +14,7 @@ public class HotelModel
     public string Website { get; set; }
     public string Description { get; set; }
     public string ImageUrl { get; set; }
-    public ICollection<int>? RoomIds { get; set; }
-    public ICollection<int>? OrderIds { get; set; }
-    public ICollection<int>? FoodIds { get; set; }
+    public ICollection<int>? RoomIds { get; set; } = new List<int>();
+    public ICollection<int>? OrderIds { get; set; } = new List<int>();
+    public ICollection<int>? FoodIds { get; set; } = new List<int>();
 }

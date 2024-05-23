@@ -1,16 +1,15 @@
-﻿using System.Data.Entity.ModelConfiguration.Conventions;
-using AutoMapper;
+﻿using AutoMapper;
 using HotelBookingApp.Business.DTO;
 using HotelBookingApp.Data.Models;
 
 namespace HotelBookingApp.Business;
 
-public class AutoMapper : Profile
+public class AutoMapperConfig : Profile
 {
-    public AutoMapper()
+    public AutoMapperConfig()
     {
 
-        CreateMap<Customer, CustomerModel>()
+        CreateMap<User, UserModel>()
             .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(o => o.Id)))
             .ReverseMap();
 

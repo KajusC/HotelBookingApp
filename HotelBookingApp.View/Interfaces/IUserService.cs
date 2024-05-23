@@ -2,7 +2,7 @@
 
 namespace HotelBookingApp.Business.Interfaces;
 
-public interface ICustomerService : ICrud<CustomerModel>
+public interface IUserService : ICrud<UserModel>
 {
     
 }

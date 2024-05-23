@@ -37,9 +37,9 @@ public class FoodService : IFoodService
         return await _foodRepository.AddAsync(food);
     }
 
-    public async Task<bool> UpdateAsync(int id, FoodModel model)
+    public async Task<bool> UpdateAsync(FoodModel model)
     {
-        var currentFood = await _foodRepository.GetByIdAsync(id);
+        var currentFood = await _foodRepository.GetByIdAsync(model.Id);
         if (currentFood == null)
         {
             return false;

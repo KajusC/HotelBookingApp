@@ -14,6 +14,6 @@ public class OrderModel
     public string? Status { get; set; }
     public int CustomerId { get; set; }
 
-    public ICollection<int> RoomIds { get; set; }
-    public ICollection<int> FoodIds { get; set; }
+    public ICollection<int> RoomIds { get; set; } = new List<int>();
+    public ICollection<int> FoodIds { get; set; } = new List<int>();
 }

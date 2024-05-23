@@ -12,5 +12,5 @@ public class RoomModel
     public int Capacity { get; set; }
     public bool IsBooked { get; set; }
     public int HotelId { get; set; }
-    public ICollection<int> OrderIds { get; set; }
+    public ICollection<int> OrderIds { get; set; } = new List<int>();
 }

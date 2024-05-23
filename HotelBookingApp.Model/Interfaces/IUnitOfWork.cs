@@ -3,7 +3,7 @@
 public interface IUnitOfWork
 {
     
-    ICustomerRepository CustomerRepository { get; }
+    IUserRepository UserRepository { get; }
     IFoodRepository FoodRepository { get; }
     IHotelRepository HotelRepository { get; }
     IOrderRepository OrderRepository { get; }

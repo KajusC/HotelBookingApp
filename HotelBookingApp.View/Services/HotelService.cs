@@ -37,9 +37,9 @@ public class HotelService : IHotelService
         return result;
     }
 
-    public async Task<bool> UpdateAsync(int id, HotelModel model)
+    public async Task<bool> UpdateAsync(HotelModel model)
     {
-        var currentHotel = await _hotelRepository.GetByIdAsync(id);
+        var currentHotel = await _hotelRepository.GetByIdAsync(model.Id);
         if (currentHotel == null)
         {
             return false;
