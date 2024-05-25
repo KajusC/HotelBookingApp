@@ -45,10 +45,8 @@ public class RoomController : ControllerBase
             return BadRequest();
         }
 
-        if(await _roomService.AddAsync(room))
+        await _roomService.AddAsync(room);
             return Ok();
-        else
-            return BadRequest();
     }
 
     [HttpPut("{id}")]
@@ -68,10 +66,8 @@ public class RoomController : ControllerBase
         room.Id = id;
 
 
-        if(await _roomService.UpdateAsync(room))
+        await _roomService.UpdateAsync(room);
             return Ok();
-        else
-            return BadRequest();
     }
 
     [HttpDelete("{id}")]
@@ -84,9 +80,7 @@ public class RoomController : ControllerBase
             return NotFound();
         }
 
-        if(await _roomService.DeleteAsync(id))
+        await _roomService.DeleteAsync(id);
             return Ok();
-        else
-            return BadRequest();
     }
 }

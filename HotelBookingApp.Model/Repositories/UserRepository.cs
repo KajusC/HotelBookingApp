@@ -1,6 +1,6 @@
 ﻿using HotelBookingApp.Data.Data;
 using HotelBookingApp.Data.Interfaces;
-using HotelBookingApp.Data.Models;
+using HotelBookingApp.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBookingApp.Data.Repositories;

@@ -1,46 +1,14 @@
-﻿using HotelBookingApp.Data.Data;
+﻿using System.Dynamic;
+using HotelBookingApp.Data.Data;
 using HotelBookingApp.Data.Interfaces;
-using HotelBookingApp.Data.Models;
+using HotelBookingApp.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBookingApp.Data.Repositories;
 
-public class RoomTypeRepository : IRoomTypeRepository
+public class RoomTypeRepository : GeneralRepository<RoomType>, IRoomTypeRepository
 {
-
-    private readonly DbSet<RoomType> _roomTypes;
-    private readonly HotelDataContext _hotelDataContext;
-    public RoomTypeRepository(HotelDataContext hotelDataContext)
+    public RoomTypeRepository(HotelDataContext context) : base(context)
     {
-        _hotelDataContext = hotelDataContext;
-        _roomTypes = hotelDataContext.RoomTypes;
-    }
-    public async Task<IEnumerable<RoomType>> GetAllAsync()
-    {
-        return await _roomTypes.ToListAsync();
-    }
-
-    public async Task<RoomType> GetByIdAsync(int id)
-    {
-        return await _roomTypes.FirstOrDefaultAsync(x => x.Id == id);
-    }
-
-    public async Task<bool> AddAsync(RoomType entity)
-    {
-        await _roomTypes.AddAsync(entity);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
-    }
-
-    public async Task<bool> UpdateAsync(RoomType entity)
-    {
-        _roomTypes.Update(entity);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
-    }
-
-    public async Task<bool> DeleteAsync(int id)
-    {
-        var roomType = await GetByIdAsync(id);
-        _roomTypes.Remove(roomType);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
     }
 }

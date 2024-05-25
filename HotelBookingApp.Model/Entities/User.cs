@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace HotelBookingApp.Data.Models;
+namespace HotelBookingApp.Data.Entities;
 
 public class User : IdentityUser
 {

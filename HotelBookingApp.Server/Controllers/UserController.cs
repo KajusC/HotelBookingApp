@@ -1,7 +1,7 @@
 ﻿using HotelBookingApp.Business.DTO;
 using HotelBookingApp.Business.Interfaces;
 using HotelBookingApp.Data.Interfaces;
-using HotelBookingApp.Data.Models;
+using HotelBookingApp.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBookingApp.Server.Controllers;

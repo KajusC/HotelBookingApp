@@ -36,19 +36,6 @@ public class HotelController : ControllerBase
         return Ok(hotel);
     }
 
-    [HttpGet("Foods/{id}")]
-    public async Task<ActionResult<int>> GetHotelsFoodsById(int id)
-    {
-        var hotel = await _hotelService.GetByIdAsync(id);
-        if (hotel == null)
-        {
-            _logger.LogWarning($"Hotel with id {id} not found");
-            return NotFound();
-        }
-        var foods = hotel.FoodIds.First();
-        return Ok(foods);
-    }
-
     [HttpPost]
     public async Task<ActionResult> AddHotel([FromBody] HotelModel hotel)
     {
@@ -58,10 +45,8 @@ public class HotelController : ControllerBase
             return BadRequest();
         }
 
-        if(await _hotelService.AddAsync(hotel))
+        await _hotelService.AddAsync(hotel);
             return Ok();
-        else
-            return BadRequest();
     }
 
     [HttpPut("{id}")]
@@ -81,22 +66,15 @@ public class HotelController : ControllerBase
         }
         hotel.Id = id;
 
-        if(await _hotelService.UpdateAsync(hotel))
+        await _hotelService.UpdateAsync(hotel);
             return Ok();
-        else
-            return BadRequest();
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteHotel(int id)
     {
-        if(await _hotelService.DeleteAsync(id))
+        await _hotelService.DeleteAsync(id);
                         return Ok();
-        else
-        {
-            _logger.LogWarning($"Hotel with id {id} not found");
-            return BadRequest();
-        }
            
     }
 }

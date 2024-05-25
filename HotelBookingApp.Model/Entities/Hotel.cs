@@ -1,4 +1,6 @@
-﻿namespace HotelBookingApp.Data.Models;
+﻿using HotelBookingApp.Data.Entities.ManyToMany;
+
+namespace HotelBookingApp.Data.Entities;
 
 public class Hotel : BaseEntity
 {
@@ -12,7 +14,6 @@ public class Hotel : BaseEntity
     public string Description { get; set; }
     public string ImageUrl { get; set; }
 
-    public ICollection<Room> Rooms { get; set; } = new List<Room>();
+    public ICollection<FoodHotel> FoodHotels { get; set; } = new List<FoodHotel>();
     public ICollection<Order> Orders { get; set; } = new List<Order>();
-    public ICollection<Food> Foods { get; set; } = new List<Food>();
 }

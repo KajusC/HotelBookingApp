@@ -1,4 +1,4 @@
-﻿using HotelBookingApp.Data.Models;
+﻿using HotelBookingApp.Data.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace HotelBookingApp.Business.DTO;

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Threading.Tasks;
 using HotelBookingApp.Business.Interfaces;
-using HotelBookingApp.Data.Models;
+using HotelBookingApp.Data.Entities;
 using HotelBookingApp.Data.Data;
 
 namespace HotelBookingApp.Data
@@ -84,24 +84,6 @@ namespace HotelBookingApp.Data
                 foreach (var roomType in roomTypes)
                 {
                     roomType.Rooms.ToList().AddRange(rooms.Where(r => r.RoomTypeId == roomType.Id));
-                }
-
-
-                for (int i = 0; i < foods.Length; i++)
-                {
-                    if (i % 2 == 0)
-                    {
-                        foods[i].Hotels.Add(hotels[0]);
-                    }
-                    else
-                    {
-                        foods[i].Hotels.Add(hotels[1]);
-                    }
-                }
-
-                foreach (var hotel in hotels)
-                {
-                    hotel.Foods.ToList().AddRange(foods.Where(f => f.Hotels.Contains(hotel)));
                 }
 
 

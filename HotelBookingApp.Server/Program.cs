@@ -4,7 +4,7 @@ using HotelBookingApp.Business.Services;
 using HotelBookingApp.Data;
 using HotelBookingApp.Data.Data;
 using HotelBookingApp.Data.Interfaces;
-using HotelBookingApp.Data.Models;
+using HotelBookingApp.Data.Entities;
 using HotelBookingApp.Data.Repositories;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.EntityFrameworkCore;

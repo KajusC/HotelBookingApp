@@ -1,4 +1,5 @@
-﻿using HotelBookingApp.Data.Models;
+﻿using HotelBookingApp.Data.Entities;
+using HotelBookingApp.Data.Entities.ManyToMany;
 
 namespace HotelBookingApp.Business.DTO;
 
@@ -10,7 +11,7 @@ public class RoomModel
     public int Price { get; set; }
     public int Capacity { get; set; }
     public bool IsBooked { get; set; }
-    public int HotelId { get; set; }
     public int RoomTypeId { get; set; }
-    public ICollection<int> OrderIds { get; set; } = new List<int>();
+    public int HotelId { get; set; }
+    public ICollection<int> RoomOrderIds { get; set; } = new List<int>();
 }

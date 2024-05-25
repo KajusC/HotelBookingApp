@@ -38,13 +38,8 @@ public class OrderController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> AddOrder([FromBody] OrderModel order)
     {
-        if (await _orderService.AddAsync(order))
+        await _orderService.AddAsync(order);
             return Ok();
-        else
-        {
-            _logger.LogWarning("Order is null");
-            return BadRequest();
-        }
 
     }
 
@@ -66,24 +61,15 @@ public class OrderController : ControllerBase
         order.Id = id;
 
 
-        if (await _orderService.UpdateAsync(order))
+        await _orderService.UpdateAsync(order);
             return Ok();
-        else
-        {
-            _logger.LogWarning($"Order with id {id} not found");
-            return BadRequest();
-        }
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteOrder(int id)
     {
-        if (await _orderService.DeleteAsync(id))
+        await _orderService.DeleteAsync(id);
             return Ok();
-        else
-        {
-            _logger.LogWarning($"Order with id {id} not found");
-            return BadRequest();
-        }
+
     }
 }

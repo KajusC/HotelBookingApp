@@ -1,4 +1,4 @@
-﻿namespace HotelBookingApp.Data.Models;
+﻿namespace HotelBookingApp.Data.Entities;
 
 public class RoomType : BaseEntity
 {
