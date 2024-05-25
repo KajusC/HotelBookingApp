@@ -36,6 +36,19 @@ public class HotelController : ControllerBase
         return Ok(hotel);
     }
 
+    [HttpGet("Foods/{id}")]
+    public async Task<ActionResult<int>> GetHotelsFoodsById(int id)
+    {
+        var hotel = await _hotelService.GetByIdAsync(id);
+        if (hotel == null)
+        {
+            _logger.LogWarning($"Hotel with id {id} not found");
+            return NotFound();
+        }
+        var foods = hotel.FoodIds.First();
+        return Ok(foods);
+    }
+
     [HttpPost]
     public async Task<ActionResult> AddHotel([FromBody] HotelModel hotel)
     {

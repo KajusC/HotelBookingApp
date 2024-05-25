@@ -31,6 +31,7 @@ public class AutoMapperConfig : Profile
 
         CreateMap<Room, RoomModel>()
             .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(o => o.Id)))
+            .ForMember(dest => dest.RoomTypeId, opt => opt.MapFrom(src => src.RoomTypeId))
             .ReverseMap();
 
         CreateMap<RoomType, RoomTypeModel>()

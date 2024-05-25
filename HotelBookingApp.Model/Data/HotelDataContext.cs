@@ -17,16 +17,9 @@ namespace HotelBookingApp.Data.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
+            modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
 
-            // Configure keyless entity for IdentityUserLogin
-            modelBuilder.Entity<IdentityUserLogin<string>>()
-                .HasNoKey();
-
-            // Configure keyless entity for IdentityUserRole
-            modelBuilder.Entity<IdentityUserRole<string>>()
-                .HasNoKey();
-
-            
             modelBuilder.Entity<Room>()
                 .HasOne(r => r.RoomType)
                 .WithMany(rt => rt.Rooms)
@@ -47,7 +40,7 @@ namespace HotelBookingApp.Data.Data
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.User)
-                .WithMany(c => c.Orders)
+                .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.CustomerId);
 
             modelBuilder.Entity<Order>()
@@ -57,7 +50,8 @@ namespace HotelBookingApp.Data.Data
 
             modelBuilder.Entity<Hotel>()
                 .HasMany(h => h.Foods)
-                .WithMany(o => o.Hotels);
+                .WithMany(f => f.Hotels);
         }
+
     }
 }

@@ -6,6 +6,6 @@ namespace HotelBookingApp.Data.Models;
 public class BaseEntity
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("Id")]
     public int Id { get; set; }
 }
