@@ -1,12 +1,29 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import logo from './assets/o.png'; // make sure the path to your image is correct
 
 function Navbar() {
     return (
-        <nav className="navbar d-flex justify-content-center" style={{ backgroundColor: '#0B3954' }}>
-            <a className="navbar-brand " href="#" style={{ color: 'white' }}>Hotel Booking App</a>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style={{ borderColor: 'white' }}>
-                <span className="navbar-toggler-icon" style={{ backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 30 30\'%3e%3cpath stroke=\'%23ffffff\' stroke-linecap=\'round\' stroke-miterlimit=\'10\' stroke-width=\'2\' d=\'M4 7h22M4 15h22M4 23h22\'/%3e%3c/svg%3e")' }}></span>
+        <nav className="navbar navbar-expand d-flex justify-content-between p-3" style={{ backgroundColor: '#0B3954' }}>
+            <div className="d-flex align-items-center">
+                <img src={logo} alt="Logo" style={{ height: '80px' }} />
+                <a className="navbar-brand ml-2" href="#" style={{ color: 'white' }}>Hotel Booking App</a>
+            </div>
+            <div className="collapse navbar-collapse d-flex justify-content-center flex-grow-0" id="navbarNav">
+                <ul className="navbar-nav">
+                    <li className="nav-item active">
+                        <a className="nav-link" href="#" style={{ color: 'white' }}>Home</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" href="#" style={{ color: 'white' }}>Features</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" href="#" style={{ color: 'white' }}>Pricing</a>
+                    </li>
+                </ul>
+            </div>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style={{ borderColor: 'white', color: 'white' }}>
+                <span className="navbar-toggler-icon"></span>
             </button>
         </nav>
     );

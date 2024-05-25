@@ -55,7 +55,7 @@ public class UserController : ControllerBase
             return NotFound();
         }
 
-        ModelCombiner(customer, model);
+        model.Id = id;
 
         // Use the existing entity in the update service method
         await _userService.UpdateAsync(customer);
@@ -66,12 +66,5 @@ public class UserController : ControllerBase
     public async Task Delete(int id)
     {
         await _userService.DeleteAsync(id);
-    }
-
-    private static void ModelCombiner(UserModel model, UserModel user)
-    {
-        model.FirstName = user.FirstName;
-        model.LastName = user.LastName;
-        model.Email = user.Email;
     }
 }
