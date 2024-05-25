@@ -49,12 +49,22 @@ namespace HotelBookingApp.Data
                     }
                 };
 
+                var Roomtypes = new[]
+                {
+                    new RoomType
+                        { Name = "Single", Rooms = new List<Room>() },
+                    new RoomType
+                        { Name = "Double", Rooms = new List<Room>() },
+                };
+
                 // Seed other data
                 var hotels = new[]
                 {
                     new Hotel { Name = "Hotel One", Address = "789 Pine St", City = "Big City", Country = "USA", PhoneNumber = "1111111111", Email = "contact@hotelone.com", Website = "www.hotelone.com", Description = "A luxurious hotel.", ImageUrl = "image_url_one" },
                     new Hotel { Name = "Hotel Two", Address = "123 Oak St", City = "Small Town", Country = "USA", PhoneNumber = "2222222222", Email = "contact@hoteltwo.com", Website = "www.hoteltwo.com", Description = "A cozy hotel.", ImageUrl = "image_url_two" }
                 };
+
+                context.RoomTypes.AddRange(Roomtypes);
 
                 context.Users.AddRange(users);
                 context.Hotels.AddRange(hotels);

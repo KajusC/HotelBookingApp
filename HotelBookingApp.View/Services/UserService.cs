@@ -33,14 +33,13 @@ public class UserService : IUserService
         return _mapper.Map<UserModel>(customer);
     }
 
-    public async Task<bool> AddAsync(UserModel model)
+    public async Task AddAsync(UserModel model)
     {
         var customer = _mapper.Map<User>(model);
         var result = await _userRepository.AddAsync(customer);
-        return result;
     }
 
-    public async Task<bool> UpdateAsync(UserModel user)
+    public async Task UpdateAsync(UserModel user)
     {
         if (user == null)
         {
@@ -57,13 +56,10 @@ public class UserService : IUserService
 
         var updateResult = await _userRepository.UpdateAsync(existingCustomer);
 
-        // Check if the update was successful
-        return updateResult;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
         var result = await _userRepository.DeleteAsync(id);
-        return result;
     }
 }

@@ -36,6 +36,7 @@ namespace HotelBookingApp.Server
             builder.Services.AddScoped<IHotelService, HotelService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IRoomService, RoomService>();
+            builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
 
             builder.Services.AddLogging();
             builder.Logging.ClearProviders();

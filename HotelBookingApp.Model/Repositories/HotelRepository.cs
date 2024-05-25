@@ -9,37 +9,69 @@ public class HotelRepository : IHotelRepository
 {
     private readonly DbSet<Hotel> _hotels;
     private readonly HotelDataContext _hotelDataContext;
+
     public HotelRepository(HotelDataContext hotelDataContext)
     {
         _hotelDataContext = hotelDataContext;
         _hotels = hotelDataContext.Hotels;
     }
+
     public async Task<IEnumerable<Hotel>> GetAllAsync()
     {
-        return await _hotels.ToListAsync();
+        return await _hotels
+            .Include(h => h.Rooms)
+            .Include(h => h.Foods)
+            .ToListAsync();
     }
 
     public async Task<Hotel> GetByIdAsync(int id)
     {
-        return await _hotels.FirstOrDefaultAsync(x => x.Id == id);
+        return await _hotels
+            .Include(h => h.Rooms)
+            .Include(h => h.Foods)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<bool> AddAsync(Hotel entity)
+    public async Task AddAsync(Hotel entity)
     {
         await _hotels.AddAsync(entity);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
+        await _hotelDataContext.SaveChangesAsync();
     }
 
-    public async Task<bool> UpdateAsync(Hotel entity)
+    public async Task Delete(Hotel entity)
     {
-        _hotels.Update(entity);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
+        _hotels.Remove(entity);
+        await _hotelDataContext.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteByIdAsync(int id)
     {
         var hotel = await GetByIdAsync(id);
+        if (hotel == null) return;
+
         _hotels.Remove(hotel);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
+        await _hotelDataContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Hotel entity)
+    {
+        _hotels.Update(entity);
+        await _hotelDataContext.SaveChangesAsync();
+    }
+
+    public async Task<Hotel> GetHotelsWithDetailsAsync()
+    {
+        return await _hotels
+            .Include(h => h.Rooms)
+            .Include(h => h.Foods)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<Hotel> GetHotelWithDetailsAsyncById(int id)
+    {
+        return await _hotels
+            .Include(h => h.Rooms)
+            .Include(h => h.Foods)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

@@ -18,6 +18,14 @@ public class OrderService : IOrderService
         _orderRepository = unit.OrderRepository;
         _mapper = mapper;
     }
+
+    public async Task<IEnumerable<OrderModel>> GetOrdersByCustomerId(int customerId)
+    {
+        var orders = await _orderRepository.GetAllAsync();
+        var selectedOrders = orders.Where(x => x.CustomerId == customerId);
+        return _mapper.Map<IEnumerable<OrderModel>>(selectedOrders);
+    }
+
     public async Task<IEnumerable<OrderModel>> GetAllAsync()
     {
         var orders = await _orderRepository.GetAllAsync();
@@ -30,33 +38,29 @@ public class OrderService : IOrderService
         return _mapper.Map<OrderModel>(order);
     }
 
-    public async Task<bool> AddAsync(OrderModel model)
+    public async Task AddAsync(OrderModel model)
     {
         var order = _mapper.Map<Order>(model);
-        return await _orderRepository.AddAsync(order);
+        await _orderRepository.AddAsync(order);
+        await _unit.SaveChangesAsync();
     }
 
-    public async Task<bool> UpdateAsync(OrderModel model)
+    public async Task UpdateAsync(OrderModel model)
     {
         var currentOrder = await _orderRepository.GetByIdAsync(model.Id);
         if (currentOrder == null)
         {
-            return false;
+            return;
         }
 
         _mapper.Map(model, currentOrder);
-        return await _orderRepository.UpdateAsync(currentOrder);
+        await _orderRepository.UpdateAsync(currentOrder);
+        await _unit.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteAsync(int modelId)
     {
-        return await _orderRepository.DeleteAsync(id);
-    }
-
-    public async Task<IEnumerable<OrderModel>> GetOrdersByCustomerId(int customerId)
-    {
-        var orders = await _orderRepository.GetAllAsync();
-        var selectedOrders = orders.Where(x => x.CustomerId == customerId);
-        return _mapper.Map<IEnumerable<OrderModel>>(selectedOrders);
+        await _orderRepository.DeleteByIdAsync(modelId);
+        await _unit.SaveChangesAsync();
     }
 }

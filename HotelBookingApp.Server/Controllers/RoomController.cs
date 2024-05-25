@@ -1,5 +1,6 @@
 ﻿using HotelBookingApp.Business.DTO;
 using HotelBookingApp.Business.Interfaces;
+using HotelBookingApp.Business.Validity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBookingApp.Server.Controllers;
@@ -45,10 +46,17 @@ public class RoomController : ControllerBase
             return BadRequest();
         }
 
-        if(await _roomService.AddAsync(room))
+        try
+        {
+            await _roomService.AddAsync(room);
             return Ok();
-        else
-            return BadRequest();
+        }
+        catch (ServiceException e)
+        {
+            Console.WriteLine(e);
+            return Ok(StatusCode(500));
+        }
+
     }
 
     [HttpPut("{id}")]
@@ -68,10 +76,8 @@ public class RoomController : ControllerBase
         room.Id = id;
 
 
-        if(await _roomService.UpdateAsync(room))
-            return Ok();
-        else
-            return BadRequest();
+        await _roomService.UpdateAsync(room);
+        return Ok();
     }
 
     [HttpDelete("{id}")]
@@ -84,9 +90,7 @@ public class RoomController : ControllerBase
             return NotFound();
         }
 
-        if(await _roomService.DeleteAsync(id))
+        await _roomService.DeleteAsync(id);
             return Ok();
-        else
-            return BadRequest();
     }
 }

@@ -5,8 +5,14 @@ namespace HotelBookingApp.Data.Interfaces;
 public interface IRepository<TEntity> where TEntity : BaseEntity
 {
     Task<IEnumerable<TEntity>> GetAllAsync();
+
     Task<TEntity> GetByIdAsync(int id);
-    Task<bool> AddAsync(TEntity entity);
-    Task<bool> UpdateAsync(TEntity entity);
-    Task<bool> DeleteAsync(int id);
+
+    Task AddAsync(TEntity entity);
+
+    Task Delete(TEntity entity);
+
+    Task DeleteByIdAsync(int id);
+
+    Task UpdateAsync(TEntity entity);
 }

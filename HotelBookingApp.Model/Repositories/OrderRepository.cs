@@ -9,11 +9,13 @@ public class OrderRepository : IOrderRepository
 {
     private readonly DbSet<Order> _orders;
     private readonly HotelDataContext _hotelDataContext;
+
     public OrderRepository(HotelDataContext hotelDataContext)
     {
         _hotelDataContext = hotelDataContext;
         _orders = hotelDataContext.Orders;
     }
+
     public async Task<IEnumerable<Order>> GetAllAsync()
     {
         return await _orders.ToListAsync();
@@ -24,22 +26,48 @@ public class OrderRepository : IOrderRepository
         return await _orders.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<bool> AddAsync(Order entity)
+    public async Task AddAsync(Order entity)
     {
         await _orders.AddAsync(entity);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
+        await _hotelDataContext.SaveChangesAsync();
     }
 
-    public async Task<bool> UpdateAsync(Order entity)
+    public async Task Delete(Order entity)
     {
-        _orders.Update(entity);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
+        _orders.Remove(entity);
+        await _hotelDataContext.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteByIdAsync(int id)
     {
         var order = await GetByIdAsync(id);
+        if (order == null) return;
+
         _orders.Remove(order);
-        return await _hotelDataContext.SaveChangesAsync() > 0;  
+        await _hotelDataContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Order entity)
+    {
+        _orders.Update(entity);
+        await _hotelDataContext.SaveChangesAsync();
+    }
+
+    public async Task<Order> GetOrdersWithDetailsAsync()
+    {
+        return await _orders
+            .Include(o => o.Foods)
+            .Include(o => o.Rooms)
+            .Include(o => o.User)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<Order> GetOrderWithDetailsAsyncById(int id)
+    {
+        return await _orders
+            .Include(o => o.Foods)
+            .Include(o => o.Rooms)
+            .Include(o => o.User)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

@@ -11,6 +11,8 @@ public class Order : BaseEntity
     public string Status { get; set; }
     public int CustomerId { get; set; }
     public User User { get; set; }
-    public ICollection<Food> Foods { get; set; } = new List<Food>();
     public ICollection<Room> Rooms { get; set; } = new List<Room>();
+    public ICollection<Food> Foods { get; set; } = new List<Food>();
+
+
 }

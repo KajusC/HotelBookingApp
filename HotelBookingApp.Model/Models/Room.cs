@@ -4,12 +4,12 @@ public class Room : BaseEntity
 {
     public string Name { get; set; }
     public string Description { get; set; }
-    public int RoomTypeId { get; set; }
-    public RoomType RoomType { get; set; }
     public int Price { get; set; }
     public int Capacity { get; set; }
     public bool IsBooked { get; set; }
-    public int HotelId { get; set; }
-    public Hotel Hotel { get; set; }
+
+    public int RoomTypeId { get; set; }
+    public RoomType RoomType { get; set; } = new RoomType();
+    public ICollection<Hotel> Hotels { get; set; } = new List<Hotel>();
     public ICollection<Order> Orders { get; set; } = new List<Order>();
 }

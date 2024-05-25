@@ -18,6 +18,7 @@ public class HotelService : IHotelService
         _hotelRepository = unit.HotelRepository;
         _mapper = mapper;
     }
+
     public async Task<IEnumerable<HotelModel>> GetAllAsync()
     {
         var hotels = await _hotelRepository.GetAllAsync();
@@ -30,41 +31,43 @@ public class HotelService : IHotelService
         return _mapper.Map<HotelModel>(hotel);
     }
 
-    public async Task<bool> AddAsync(HotelModel model)
+    public async Task AddAsync(HotelModel model)
     {
         var hotel = _mapper.Map<Hotel>(model);
-        var result = await _hotelRepository.AddAsync(hotel);
-        return result;
+        await _hotelRepository.AddAsync(hotel);
+        await _unit.SaveChangesAsync();
     }
 
-    public async Task<bool> UpdateAsync(HotelModel model)
+    public async Task UpdateAsync(HotelModel model)
     {
         var currentHotel = await _hotelRepository.GetByIdAsync(model.Id);
         if (currentHotel == null)
         {
-            return false;
+            return;
         }
 
         _mapper.Map(model, currentHotel);
-        return await _hotelRepository.UpdateAsync(currentHotel);
+        await _hotelRepository.UpdateAsync(currentHotel);
+        await _unit.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteAsync(int modelId)
     {
-        return await _hotelRepository.DeleteAsync(id);
+        await _hotelRepository.DeleteByIdAsync(modelId);
+        await _unit.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<HotelModel>> GetHotelByFoodInclusion(int foodInclusionId)
     {
         var hotels = await _hotelRepository.GetAllAsync();
-        var selectedHotels = hotels.Where(x => x.Foods.Any(y => y.Id == foodInclusionId));
+        var selectedHotels = hotels.Where(x => x.Foods.Any(food => food.Id == foodInclusionId));
         return _mapper.Map<IEnumerable<HotelModel>>(selectedHotels);
     }
 
     public async Task<IEnumerable<HotelModel>> GetHotelByRoomTypes(int roomTypeId)
     {
         var hotels = await _hotelRepository.GetAllAsync();
-        var selectedHotels = hotels.Where(x => x.Rooms.Any(y => y.RoomTypeId == roomTypeId));
+        var selectedHotels = hotels.Where(x => x.Rooms.Any(room => room.RoomTypeId == roomTypeId));
         return _mapper.Map<IEnumerable<HotelModel>>(selectedHotels);
     }
 }

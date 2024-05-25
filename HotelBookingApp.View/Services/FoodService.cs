@@ -31,26 +31,29 @@ public class FoodService : IFoodService
         return _mapper.Map<FoodModel>(food);
     }
 
-    public async Task<bool> AddAsync(FoodModel model)
+    public async Task AddAsync(FoodModel model)
     {
         var food = _mapper.Map<Food>(model);
-        return await _foodRepository.AddAsync(food);
+        await _foodRepository.AddAsync(food);
+        await _unit.SaveChangesAsync();
     }
 
-    public async Task<bool> UpdateAsync(FoodModel model)
+    public async Task UpdateAsync(FoodModel model)
     {
         var currentFood = await _foodRepository.GetByIdAsync(model.Id);
         if (currentFood == null)
         {
-            return false;
+            return;
         }
 
         _mapper.Map(model, currentFood);
-        return await _foodRepository.UpdateAsync(currentFood);
+        await _foodRepository.UpdateAsync(currentFood);
+        await _unit.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteAsync(int modelId)
     {
-        return await _foodRepository.DeleteAsync(id);
+        await _foodRepository.DeleteByIdAsync(modelId);
+        await _unit.SaveChangesAsync();
     }
 }

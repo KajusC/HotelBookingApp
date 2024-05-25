@@ -15,6 +15,7 @@ public class FoodRepository : IFoodRepository
         _hotelDataContext = hotelDataContext;
         _foods = hotelDataContext.Foods;
     }
+
     public async Task<IEnumerable<Food>> GetAllAsync()
     {
         return await _foods.ToListAsync();
@@ -25,22 +26,46 @@ public class FoodRepository : IFoodRepository
         return await _foods.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<bool> AddAsync(Food entity)
+    public async Task AddAsync(Food entity)
     {
         await _foods.AddAsync(entity);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
+        await _hotelDataContext.SaveChangesAsync();
     }
 
-    public async Task<bool> UpdateAsync(Food entity)
+    public async Task Delete(Food entity)
     {
-        _foods.Update(entity);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
+        _foods.Remove(entity);
+        await _hotelDataContext.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteByIdAsync(int id)
     {
         var food = await GetByIdAsync(id);
+        if (food == null) return;
+
         _foods.Remove(food);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
+        await _hotelDataContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Food entity)
+    {
+        _foods.Update(entity);
+        await _hotelDataContext.SaveChangesAsync();
+    }
+
+    public async Task<Food> GetFoodsWithDetailsAsync()
+    {
+        return await _foods
+            .Include(f => f.Hotels)
+            .Include(f => f.Orders)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<Food> GetFoodWithDetailsAsyncById(int id)
+    {
+        return await _foods
+            .Include(f => f.Hotels)
+            .Include(f => f.Orders)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

@@ -8,33 +8,37 @@ public class AutoMapperConfig : Profile
 {
     public AutoMapperConfig()
     {
-
-        CreateMap<User, UserModel>()
-            .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(o => o.Id)))
-            .ReverseMap();
-
         CreateMap<Food, FoodModel>()
-            .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(o => o.Id)))
             .ForMember(dest => dest.HotelIds, opt => opt.MapFrom(src => src.Hotels.Select(h => h.Id)))
+            .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(o => o.Id)))
             .ReverseMap();
 
         CreateMap<Hotel, HotelModel>()
-            .ForMember(dest => dest.RoomIds, opt => opt.MapFrom(src => src.Rooms.Select(r => r.Id)))
-            .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(o => o.Id)))
-            .ForMember(dest => dest.FoodIds, opt => opt.MapFrom(src => src.Foods.Select(f => f.Id)))
-            .ReverseMap();
-
-        CreateMap<Order, OrderModel>()
             .ForMember(dest => dest.RoomIds, opt => opt.MapFrom(src => src.Rooms.Select(r => r.Id)))
             .ForMember(dest => dest.FoodIds, opt => opt.MapFrom(src => src.Foods.Select(f => f.Id)))
             .ReverseMap();
 
         CreateMap<Room, RoomModel>()
+            .ForMember(dest => dest.HotelIds, opt => opt.MapFrom(src => src.Hotels.Select(i => i.Id)))
+            .ForMember(dest => dest.RoomTypeId, opt => opt.MapFrom(src => src.RoomType.Id))
             .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(o => o.Id)))
             .ReverseMap();
 
+
+
         CreateMap<RoomType, RoomTypeModel>()
             .ForMember(dest => dest.RoomIds, opt => opt.MapFrom(src => src.Rooms.Select(r => r.Id)))
+            .ReverseMap();
+
+        CreateMap<User, UserModel>()
+            .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(o => o.Id)))
+            .ReverseMap();
+
+        CreateMap<Order, OrderModel>()
+            .ForMember(dest => dest.HotelId, opt => opt.MapFrom(src => src.Hotel.Id))
+            .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.User.Id))
+            .ForMember(dest => dest.RoomIds, opt => opt.MapFrom(src => src.Rooms.Select(r => r.Id)))
+            .ForMember(dest => dest.FoodIds, opt => opt.MapFrom(src => src.Foods.Select(f => f.Id)))
             .ReverseMap();
     }
 }

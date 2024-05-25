@@ -15,6 +15,7 @@ public class RoomTypeRepository : IRoomTypeRepository
         _hotelDataContext = hotelDataContext;
         _roomTypes = hotelDataContext.RoomTypes;
     }
+
     public async Task<IEnumerable<RoomType>> GetAllAsync()
     {
         return await _roomTypes.ToListAsync();
@@ -25,22 +26,44 @@ public class RoomTypeRepository : IRoomTypeRepository
         return await _roomTypes.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<bool> AddAsync(RoomType entity)
+    public async Task AddAsync(RoomType entity)
     {
         await _roomTypes.AddAsync(entity);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
+        await _hotelDataContext.SaveChangesAsync();
     }
 
-    public async Task<bool> UpdateAsync(RoomType entity)
+    public async Task Delete(RoomType entity)
     {
-        _roomTypes.Update(entity);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
+        _roomTypes.Remove(entity);
+        await _hotelDataContext.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteByIdAsync(int id)
     {
         var roomType = await GetByIdAsync(id);
+        if (roomType == null) return;
+
         _roomTypes.Remove(roomType);
-        return await _hotelDataContext.SaveChangesAsync() > 0;
+        await _hotelDataContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(RoomType entity)
+    {
+        _roomTypes.Update(entity);
+        await _hotelDataContext.SaveChangesAsync();
+    }
+
+    public async Task<RoomType> GetRoomTypesWithDetailsAsync()
+    {
+        return await _roomTypes
+            .Include(rt => rt.Rooms)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<RoomType> GetRoomTypeWithDetailsAsyncById(int id)
+    {
+        return await _roomTypes
+            .Include(rt => rt.Rooms)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

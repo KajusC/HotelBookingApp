@@ -45,10 +45,8 @@ public class FoodController : ControllerBase
             return BadRequest();
         }
 
-        if(await _foodService.AddAsync(food))
+        await _foodService.AddAsync(food);
             return Ok();
-        else
-            return BadRequest();
     }
 
     [HttpPut("{id}")]
@@ -68,10 +66,8 @@ public class FoodController : ControllerBase
         }
         food.Id = id;
 
-        if(await _foodService.UpdateAsync(food))
+        await _foodService.UpdateAsync(food);
             return Ok();
-        else
-            return BadRequest();
     }
 
     [HttpDelete("{id}")]
@@ -84,9 +80,7 @@ public class FoodController : ControllerBase
             return NotFound();
         }
 
-        if(await _foodService.DeleteAsync(id))
+        await _foodService.DeleteAsync(id);
             return Ok();
-        else
-            return BadRequest();
     }
 }
