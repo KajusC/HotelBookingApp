@@ -15,7 +15,7 @@ function Navbar() {
         <nav className="navbar navbar-expand d-flex justify-content-between p-3" style={{ backgroundColor: '#0B3954' }}>
             <div className="d-flex align-items-center">
                 <img src={logo} alt="Logo" style={{ height: '80px' }} />
-                <a className="navbar-brand ml-2" href="#" style={{ color: 'white' }}>Hotel Booking App</a>
+                <a className="navbar-brand ml-2" href="#" style={{ color: 'white' }}>Hoot Boot</a>
             </div>
             <div className="collapse navbar-collapse d-flex justify-content-center flex-grow-0" id="navbarNav">
                 <ul className="navbar-nav">

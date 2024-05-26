@@ -88,6 +88,8 @@ function HotelView({ hotels }) {
         fetchFoods();
     };
 
+
+    //Missed part "All calculation logic must be implemented in the back-end"
     const countDays = (checkIn, checkOut) => {
         const date1 = new Date(checkIn);
         const date2 = new Date(checkOut);
