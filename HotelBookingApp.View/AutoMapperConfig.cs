@@ -33,6 +33,7 @@ public class AutoMapperConfig : Profile
             .ReverseMap();
 
         CreateMap<Hotel, HotelModel>()
+            .ForMember(dest => dest.RoomHotelIds, opt => opt.MapFrom(src => src.RoomHotels.Select(i => i.Id)))
             .ForMember(dest => dest.FoodHotelIds, opt => opt.MapFrom(src => src.FoodHotels.Select(i => i.Id)))
             .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(i => i.Id)))
             .ReverseMap();
@@ -44,16 +45,14 @@ public class AutoMapperConfig : Profile
             .ForMember(dest => dest.RoomHotelIds, opt => opt.MapFrom(src => src.RoomHotels.Select(i => i.Id)))
             .ForMember(dest => dest.RoomOrderIds, opt => opt.MapFrom(src => src.RoomOrders.Select(i => i.Id)))
             .ReverseMap();
-        CreateMap<Hotel, HotelModel>()
-            .ForMember(dest => dest.FoodHotelIds, opt => opt.MapFrom(src => src.FoodHotels.Select(i => i.Id)))
-            .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(i => i.Id)))
-            .ReverseMap();
 
         CreateMap<RoomType, RoomTypeModel>()
             .ForMember(dest => dest.RoomIds, opt => opt.MapFrom(src => src.Rooms.Select(i => i.Id)))
             .ReverseMap();
         CreateMap<User, UserModel>()
             .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(i => i.Id)))
+            .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
+
             .ReverseMap();
 
     }

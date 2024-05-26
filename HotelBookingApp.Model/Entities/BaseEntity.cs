@@ -6,6 +6,5 @@ namespace HotelBookingApp.Data.Entities;
 public class BaseEntity
 {
     [Key]
-    [Column("Id")]
     public int Id { get; set; }
 }

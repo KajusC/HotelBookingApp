@@ -1,6 +1,7 @@
 ﻿using HotelBookingApp.Business.DTO;
 using HotelBookingApp.Business.DTO.ManyToMany;
 using HotelBookingApp.Business.Interfaces;
+using HotelBookingApp.Business.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBookingApp.Server.Controllers;
@@ -84,18 +85,27 @@ public class FoodController : ControllerBase
         await _foodService.DeleteAsync(id);
             return Ok();
     }
+    [HttpGet("/Join")]
+    public async Task<ActionResult<IEnumerable<FoodHotelModel>>> GetFoodWithHotel()
+    {
+        var foodHotels = await _foodService.GetAllFoodHotelLinks();
 
-    [HttpPost("/Join/{foodId}/{hotelId}")]
+        return Ok(foodHotels);
+    }
+
+    [HttpPost("/JoinHotel/{foodId}/{hotelId}")]
     public async Task<ActionResult> JoinFoodWithHotel(int foodId, int hotelId)
     {
         await _foodService.JoinFoodWithHotel(foodId, hotelId);
         return Ok();
     }
-    [HttpGet("/Join")]
-    public async Task<ActionResult<IEnumerable<FoodHotelModel>>> GetFoodWithHotel()
+
+    [HttpPost("JoinOrder/{foodId}/{orderId}")]
+    public async Task<ActionResult> JoinFoodWithOrder(int foodId, int orderId)
     {
-        var foodHotels = await _foodService.GetAllFoodHotelLinks();
-        
-        return Ok(foodHotels);
+        await _foodService.JoinFoodWithOrder(foodId, orderId);
+        return Ok();
     }
+
+
 }

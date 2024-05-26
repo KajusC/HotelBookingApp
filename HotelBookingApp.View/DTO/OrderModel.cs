@@ -6,7 +6,7 @@ namespace HotelBookingApp.Business.DTO;
 public class OrderModel
 {
     public int Id { get; set; }
-    public int Quantity { get; set; }
+    public double Price { get; set; }
     public DateTime OrderDate { get; set; }
     public DateTime CheckInDate { get; set; }
     public DateTime CheckOutDate { get; set; }

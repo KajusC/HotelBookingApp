@@ -18,10 +18,18 @@ public class RoomController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<RoomModel>>> GetRooms()
+    public async Task<ActionResult<IEnumerable<RoomModel>>> GetRooms([FromQuery] int HotelId = 0)
     {
-        var rooms = await _roomService.GetAllAsync();
-        return Ok(rooms);
+        if (HotelId == 0)
+        {
+            var rooms = await _roomService.GetAllAsync();
+            return Ok(rooms);
+        }
+        else
+        {
+            var rooms = await _roomService.GetRoomsByHotelId(HotelId);
+            return Ok(rooms);
+        }
     }
 
     [HttpGet("{id}")]
@@ -83,4 +91,18 @@ public class RoomController : ControllerBase
         await _roomService.DeleteAsync(id);
             return Ok();
     }
+
+    [HttpPost("JoinOrder/{roomId}/{orderId}")]
+    public async Task<ActionResult> JoinRoomAndOrder(int roomId, int orderId)
+    {
+        await _roomService.JoinRoomWithOrder(roomId, orderId);
+        return Ok();
+    }
+    [HttpPost("JoinHotel/{RoomId}/{HotelId}")]
+    public async Task<ActionResult> JoinRoomAndHotel(int RoomId, int HotelId)
+    {
+        await _roomService.JoinRoomsWithHotel(RoomId, HotelId);
+        return Ok();
+    }
+
 }

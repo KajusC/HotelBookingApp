@@ -11,7 +11,7 @@ public class UnitOfWork : IUnitOfWork
     //dI injection thtough constructor
     public UnitOfWork(HotelDataContext hotelDataContext, IUserRepository user, IFoodRepository food, 
         IHotelRepository hotel, IOrderRepository order, IRoomRepository room, IRoomTypeRepository roomType,
-        IFoodHotelRepository foodHotel, IFoodOrderRepository foodOrder, IRoomOrderRepository roomOrder)
+        IFoodHotelRepository foodHotel, IFoodOrderRepository foodOrder, IRoomOrderRepository roomOrder, IRoomHotelRepository roomHotelRepository)
     {
         _context = hotelDataContext;
         UserRepository = user;
@@ -23,6 +23,7 @@ public class UnitOfWork : IUnitOfWork
         FoodHotelRepository = foodHotel;
         FoodOrderRepository = foodOrder;
         RoomOrderRepository = roomOrder;
+        RoomHotelRepository = roomHotelRepository;
     }
 
     public async Task SaveChangesAsync()
@@ -40,5 +41,6 @@ public class UnitOfWork : IUnitOfWork
     public IFoodHotelRepository FoodHotelRepository { get; }
     public IFoodOrderRepository FoodOrderRepository { get; }
     public IRoomOrderRepository RoomOrderRepository { get; }
+    public IRoomHotelRepository RoomHotelRepository { get; }
 
 }

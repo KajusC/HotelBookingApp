@@ -1,0 +1,18 @@
+body {
+    background-color : white;
+}
+
+.img-thumbnail {
+
+    -webkit-justify-content: inherit;
+    justify-content: inherit;
+}
+
+.hotel-view {
+    background-color: transparent; /* White background */
+    margin-top: 20px; /* Add some margin to separate from the search bar */
+}
+
+.card-body {
+    padding: 10px; /* Adjust padding to reduce margin around images */
+}

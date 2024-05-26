@@ -27,18 +27,32 @@ namespace HotelBookingApp.Data.Data
             modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
             modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
 
+            base.OnModelCreating(modelBuilder);
+
             #region ManyToMany
             modelBuilder.Entity<FoodOrder>()
-                .HasKey(fo => new { fo.FoodId, fo.OrderId });
+                .HasKey(fo => new { fo.Id, fo.FoodId, fo.OrderId });
+            modelBuilder.Entity<FoodOrder>()
+                .Property(fh => fh.Id)
+                .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<RoomOrder>()
-                .HasKey(ro => new { ro.RoomId, ro.OrderId });
+                .HasKey(ro => new { ro.Id, ro.RoomId, ro.OrderId });
+            modelBuilder.Entity<RoomOrder>()
+                .Property(fh => fh.Id)
+                .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<FoodHotel>()
-                .HasKey(ro => new { ro.FoodId, ro.HotelId });
+                .HasKey(ro => new { ro.Id, ro.FoodId, ro.HotelId });
+            modelBuilder.Entity<FoodHotel>()
+                .Property(fh => fh.Id)
+                .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<RoomHotel>()
-                .HasKey(ro => new { ro.RoomId, ro.HotelId });
+                .HasKey(ro => new { ro.Id, ro.RoomId, ro.HotelId });
+            modelBuilder.Entity<RoomHotel>()
+                .Property(fh => fh.Id)
+                .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<FoodOrder>()
                 .HasOne(fo => fo.Food)
@@ -57,6 +71,8 @@ namespace HotelBookingApp.Data.Data
                 .HasOne(fh => fh.Hotel)
                 .WithMany(h => h.FoodHotels)
                 .HasForeignKey(fh => fh.HotelId);
+
+
 
             modelBuilder.Entity<RoomOrder>()
                 .HasOne(ro => ro.Room)
@@ -82,10 +98,6 @@ namespace HotelBookingApp.Data.Data
                 .HasMany(h => h.Orders)
                 .WithOne(o => o.Hotel)
                 .HasForeignKey(o => o.HotelId);
-
-            base.OnModelCreating(modelBuilder);
         }
-
-
     }
 }

@@ -18,10 +18,19 @@ public class HotelController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<HotelModel>>> GetHotels()
+    public async Task<ActionResult<IEnumerable<HotelModel>>> GetHotels([FromQuery] string countryOrCity = null!)
     {
-        var hotels = await _hotelService.GetAllAsync();
-        return Ok(hotels);
+        if (string.IsNullOrEmpty(countryOrCity))
+        {
+            var hotels = await _hotelService.GetAllAsync();
+            _logger.LogInformation("Getting all hotels");
+            return Ok(hotels);
+        }
+        else
+        {
+            var hotels = await _hotelService.GetHotelByCountryOrCity(countryOrCity);
+            return Ok(hotels);
+        }
     }
 
     [HttpGet("{id}")]
@@ -77,4 +86,5 @@ public class HotelController : ControllerBase
         return Ok();
            
     }
+
 }

@@ -15,6 +15,7 @@ public class OrderService : GeneralService<OrderModel, Order>, IOrderService
 
     public async Task<IEnumerable<OrderModel>> GetOrdersByCustomerId(int customerId)
     {
-        throw new NotImplementedException();
+        var orders = await _repository.GetAllAsync();
+        return _mapper.Map<IEnumerable<OrderModel>>(orders.Where(o => o.CustomerId == customerId));
     }
 }

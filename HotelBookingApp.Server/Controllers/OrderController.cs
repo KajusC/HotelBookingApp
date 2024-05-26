@@ -1,5 +1,7 @@
 ﻿using HotelBookingApp.Business.DTO;
+using HotelBookingApp.Business.DTO.ManyToMany;
 using HotelBookingApp.Business.Interfaces;
+using HotelBookingApp.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBookingApp.Server.Controllers;
@@ -9,12 +11,16 @@ namespace HotelBookingApp.Server.Controllers;
 public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
+    private readonly IRoomService _roomService;
+    private readonly IFoodService _foodService;
     private readonly ILogger<OrderController> _logger;
 
-    public OrderController(IOrderService orderService, ILogger<OrderController> logger)
+    public OrderController(IOrderService orderService, ILogger<OrderController> logger, IRoomService roomService, IFoodService foodService)
     {
         _orderService = orderService;
         _logger = logger;
+        _roomService = roomService;
+        _foodService = foodService;
     }
 
     [HttpGet]
@@ -36,12 +42,30 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddOrder([FromBody] OrderModel order)
+    public async Task<ActionResult> AddOrder([FromBody] OrderModel order, [FromQuery] int foodId = 0, [FromQuery] int roomId = 0)
     {
-        await _orderService.AddAsync(order);
-            return Ok();
+        if (order == null)
+        {
+            _logger.LogWarning("Order is null");
+            return BadRequest();
+        }
 
+        await _orderService.AddAsync(order);
+        
+
+        if (foodId == 0 && roomId == 0)
+        {
+            return Ok();
+        }
+        var orderList = await _orderService.GetAllAsync();
+        var last = orderList.MaxBy(o => o.Id).Id;
+
+        await _foodService.JoinFoodWithOrder(foodId, last);
+        await _roomService.JoinRoomWithOrder(roomId, last);
+
+        return Ok();
     }
+
 
     [HttpPut("{id}")]
     public async Task<ActionResult> EditOrder(int id, [FromBody] OrderModel order)
@@ -72,4 +96,13 @@ public class OrderController : ControllerBase
             return Ok();
 
     }
+
+    [HttpGet("customer/{customerId}")]
+    public async Task<ActionResult<IEnumerable<OrderModel>>> GetOrdersByCustomerId(int customerId)
+    {
+        var orders = await _orderService.GetOrdersByCustomerId(customerId);
+        return Ok(orders);
+    }
+
+
 }

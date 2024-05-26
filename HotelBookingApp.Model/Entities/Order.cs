@@ -1,10 +1,11 @@
-﻿using HotelBookingApp.Data.Entities.ManyToMany;
+﻿using System.Runtime.CompilerServices;
+using HotelBookingApp.Data.Entities.ManyToMany;
 
 namespace HotelBookingApp.Data.Entities;
 
 public class Order : BaseEntity
 {
-    public int Quantity { get; set; }
+    public double Price { get; set; }
     public DateTime OrderDate { get; set; }
     public DateTime CheckInDate { get; set; }
     public DateTime CheckOutDate { get; set; }

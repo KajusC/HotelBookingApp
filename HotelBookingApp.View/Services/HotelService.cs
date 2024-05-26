@@ -27,4 +27,11 @@ public class HotelService : GeneralService<HotelModel, Hotel>, IHotelService
         var filtered = hotels.Where(h => h.RoomHotels.Any(rh => rh.Room.RoomTypeId == roomTypeId));
         return _mapper.Map<IEnumerable<HotelModel>>(filtered);
     }
+
+    public async Task<IEnumerable<HotelModel>> GetHotelByCountryOrCity(string countryOrCity)
+    {
+        var hotels = await _repository.GetAllAsync();
+        var filtered = hotels.Where(h => h.Country == countryOrCity || h.City == countryOrCity);
+        return _mapper.Map<IEnumerable<HotelModel>>(filtered);
+    }
 }

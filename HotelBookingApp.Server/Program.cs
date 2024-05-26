@@ -16,9 +16,11 @@ namespace HotelBookingApp.Server
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddCors();
 
             // Add services to the container.
             builder.Services.AddDbContext<HotelDataContext>(options =>
@@ -59,15 +61,16 @@ namespace HotelBookingApp.Server
 
             var app = builder.Build();
 
+            app.UseCors(x => x.AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithOrigins("https://localhost:5173", "http://localhost:5188", "https://localhost:7103")
+                .AllowCredentials());
 
-                        // Get the HttpClient service from the service provider
-            var httpClient = app.Services.GetRequiredService<HttpClient>();
-
-            // Call the API
-            
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
