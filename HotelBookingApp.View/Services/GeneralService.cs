@@ -2,6 +2,7 @@
 using HotelBookingApp.Business.Interfaces;
 using HotelBookingApp.Data.Entities;
 using HotelBookingApp.Data.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace HotelBookingApp.Business.Services;
 
@@ -10,13 +11,15 @@ public class GeneralService<TEntityModel, TEntity> : ICrud<TEntityModel>
     where TEntity : BaseEntity
 {
 
-    private readonly IRepository<TEntity> _repository;
-    private readonly IMapper _mapper;
+    protected readonly IRepository<TEntity> _repository;
+    protected readonly IMapper _mapper;
+    protected readonly ILogger<TEntityModel> _logger;
 
-    public GeneralService(IRepository<TEntity> repository, IMapper mapper)
+    public GeneralService(IRepository<TEntity> repository, IMapper mapper, ILogger<TEntityModel> logger)
     {
         _repository = repository;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<TEntityModel>> GetAllAsync()
@@ -46,6 +49,7 @@ public class GeneralService<TEntityModel, TEntity> : ICrud<TEntityModel>
 
     public async Task DeleteAsync(int modelId)
     {
-        await _repository.DeleteAsync(modelId);
+        var entity = await _repository.GetByIdAsync(modelId);
+        await _repository.DeleteAsync(entity);
     }
 }

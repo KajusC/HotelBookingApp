@@ -11,7 +11,7 @@ public class Room : BaseEntity
     public bool IsBooked { get; set; }
     public int RoomTypeId { get; set; }
     public RoomType RoomType { get; set; }
-    public int HotelId { get; set; }
-    public Hotel Hotel { get; set; }
+
+    public ICollection<RoomHotel> RoomHotels { get; set; } = new List<RoomHotel>();
     public ICollection<RoomOrder> RoomOrders { get; set; } = new List<RoomOrder>();
 }

@@ -19,13 +19,13 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<User>> GetAllAsync()
     {
-        return await _customerSet.ToListAsync();
+        return await _customerSet.Include(i => i.Orders).ToListAsync();
     }
 
     public async Task<User> GetByIdAsync(int id)
     {
 
-        return (await _customerSet.FirstOrDefaultAsync(x => x.Id == id));
+        return (await _customerSet.Include(i => i.Orders).FirstOrDefaultAsync(x => x.Id == id));
     }
 
     public async Task<bool> AddAsync(User entity)

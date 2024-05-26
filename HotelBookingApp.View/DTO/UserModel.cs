@@ -12,6 +12,6 @@ public class UserModel
     public string Password { get; set; }
     public string Username { get; set; }
 
-    public ICollection<int>? OrderIds { get; set; }
+    public ICollection<int>? OrderIds { get; set; } = new List<int>();
 
 }

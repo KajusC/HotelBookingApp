@@ -1,3 +1,4 @@
+using System.Text;
 using HotelBookingApp.Business;
 using HotelBookingApp.Business.Interfaces;
 using HotelBookingApp.Business.Services;
@@ -5,6 +6,7 @@ using HotelBookingApp.Data;
 using HotelBookingApp.Data.Data;
 using HotelBookingApp.Data.Interfaces;
 using HotelBookingApp.Data.Entities;
+using HotelBookingApp.Data.Interfaces.ManyToMany;
 using HotelBookingApp.Data.Repositories;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +25,7 @@ namespace HotelBookingApp.Server
                 options.UseInMemoryDatabase("HotelBookingContext"));
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddHttpClient();
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IFoodRepository, FoodRepository>();
@@ -30,6 +33,10 @@ namespace HotelBookingApp.Server
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();
             builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
+            builder.Services.AddScoped<IFoodHotelRepository, FoodHotelRepository>();
+            builder.Services.AddScoped<IFoodOrderRepository, FoodOrderRepository>();
+            builder.Services.AddScoped<IRoomOrderRepository, RoomOrderRepository>();
+            builder.Services.AddScoped<IRoomHotelRepository, RoomHotelRepository>();
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IFoodService, FoodService>();
@@ -52,6 +59,13 @@ namespace HotelBookingApp.Server
 
             var app = builder.Build();
 
+
+                        // Get the HttpClient service from the service provider
+            var httpClient = app.Services.GetRequiredService<HttpClient>();
+
+            // Call the API
+            
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
@@ -72,14 +86,10 @@ namespace HotelBookingApp.Server
             app.MapFallbackToFile("/index.html");
 
             app.Run();
+
+
+
         }
-        private static async Task InitializeAsync(IHost host)
-        {
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                await DbInitializer.InitializeAsync(services);
-            }
-        }
+
     }
 }

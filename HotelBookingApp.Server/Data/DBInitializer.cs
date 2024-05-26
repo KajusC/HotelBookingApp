@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HotelBookingApp.Business.Interfaces;
 using HotelBookingApp.Data.Entities;
 using HotelBookingApp.Data.Data;
+using HotelBookingApp.Data.Entities.ManyToMany;
 
 namespace HotelBookingApp.Data
 {
@@ -65,10 +66,10 @@ namespace HotelBookingApp.Data
 
                 var rooms = new[]
                 {
-                    new Room { Name = "Room One", Description = "A single room.", Price = 100, Capacity = 1, IsBooked = false, HotelId = 1, RoomTypeId = 1 },
-                    new Room { Name = "Room Two", Description = "A double room.", Price = 200, Capacity = 2, IsBooked = false, HotelId = 2, RoomTypeId = 2 },
-                    new Room { Name = "Room Three", Description = "A single room.", Price = 100, Capacity = 1, IsBooked = false, HotelId = 1, RoomTypeId = 1 },
-                    new Room { Name = "Room Four", Description = "A double room.", Price = 200, Capacity = 2, IsBooked = false, HotelId = 2, RoomTypeId = 3 }
+                    new Room { Name = "Room One", Description = "A single room.", Price = 100, Capacity = 1, IsBooked = false, RoomTypeId = 1 },
+                    new Room { Name = "Room Two", Description = "A double room.", Price = 200, Capacity = 2, IsBooked = false, RoomTypeId = 2 },
+                    new Room { Name = "Room Three", Description = "A single room.", Price = 100, Capacity = 1, IsBooked = false, RoomTypeId = 1 },
+                    new Room { Name = "Room Four", Description = "A double room.", Price = 200, Capacity = 2, IsBooked = false,  RoomTypeId = 3 }
                 };
                 var foods = new[]
                 {
@@ -79,6 +80,20 @@ namespace HotelBookingApp.Data
                     new Food { Name = "Dessert", Description = "Ice Cream", Price = 8, ImageUrl = @"https://randompicturegenerator.com/img/picture-generator/54e1d4404353a814f1dc8460962e33791c3ad6e04e507440722d72d2954ec2_640.jpg"}
                 };
 
+                var foodHotels = new[]
+                {
+                    new FoodHotel { FoodId = 1, HotelId = 1 }
+                };
+                //add foodhotels to foods
+                foreach (var food in foods)
+                {
+                    food.FoodHotels.ToList().AddRange(foodHotels.Where(fh => fh.FoodId == food.Id));
+                }
+                //add foodhotels to hotels
+                foreach (var hotel in hotels)
+                {
+                    hotel.FoodHotels.ToList().AddRange(foodHotels.Where(fh => fh.HotelId == hotel.Id));
+                }
 
 
                 foreach (var roomType in roomTypes)
@@ -88,7 +103,7 @@ namespace HotelBookingApp.Data
 
 
 
-                
+                context.FoodHotels.AddRange(foodHotels);
                 context.Foods.AddRange(foods);
                 context.RoomTypes.AddRange(roomTypes);
                 context.Rooms.AddRange(rooms);

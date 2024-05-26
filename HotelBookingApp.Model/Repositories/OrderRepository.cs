@@ -11,4 +11,20 @@ public class OrderRepository : GeneralRepository<Order> , IOrderRepository
     {
     }
 
+    public override async Task<IEnumerable<Order>> GetAllAsync()
+    {
+        return await _dbSet
+            .Include(o => o.RoomOrders)
+            .Include(o => o.FoodOrders)
+            .ToListAsync();
+    }
+
+    public override async Task<Order> GetByIdAsync(int id)
+    {
+        return await _dbSet
+            .Include(o => o.RoomOrders)
+            .Include(o => o.FoodOrders)
+            .FirstOrDefaultAsync(o => o.Id == id);
+    }
+
 }

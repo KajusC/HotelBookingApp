@@ -7,11 +7,11 @@ namespace HotelBookingApp.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SeedController : ControllerBase
+    public class DataSeedController : ControllerBase
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public SeedController(IServiceProvider serviceProvider)
+        public DataSeedController(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }

@@ -20,6 +20,7 @@ namespace HotelBookingApp.Data.Data
         public DbSet<FoodOrder> FoodOrders{ get; set; }
         public DbSet<FoodHotel> FoodHotels { get; set; }
         public DbSet<RoomOrder> RoomOrders { get; set; }
+        public DbSet<RoomHotel> RoomHotels { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,10 +30,15 @@ namespace HotelBookingApp.Data.Data
             #region ManyToMany
             modelBuilder.Entity<FoodOrder>()
                 .HasKey(fo => new { fo.FoodId, fo.OrderId });
-            modelBuilder.Entity<FoodHotel>()
-                .HasKey(fh => new { fh.FoodId, fh.HotelId });
+
             modelBuilder.Entity<RoomOrder>()
                 .HasKey(ro => new { ro.RoomId, ro.OrderId });
+
+            modelBuilder.Entity<FoodHotel>()
+                .HasKey(ro => new { ro.FoodId, ro.HotelId });
+
+            modelBuilder.Entity<RoomHotel>()
+                .HasKey(ro => new { ro.RoomId, ro.HotelId });
 
             modelBuilder.Entity<FoodOrder>()
                 .HasOne(fo => fo.Food)
@@ -61,6 +67,7 @@ namespace HotelBookingApp.Data.Data
                 .WithMany(o => o.RoomOrders)
                 .HasForeignKey(ro => ro.OrderId);
             #endregion
+
             modelBuilder.Entity<Room>()
                 .HasOne(r => r.RoomType)
                 .WithMany(rt => rt.Rooms)
@@ -76,10 +83,9 @@ namespace HotelBookingApp.Data.Data
                 .WithOne(o => o.Hotel)
                 .HasForeignKey(o => o.HotelId);
 
-
-
             base.OnModelCreating(modelBuilder);
         }
+
 
     }
 }

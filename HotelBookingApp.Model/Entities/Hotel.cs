@@ -16,4 +16,5 @@ public class Hotel : BaseEntity
 
     public ICollection<FoodHotel> FoodHotels { get; set; } = new List<FoodHotel>();
     public ICollection<Order> Orders { get; set; } = new List<Order>();
+    public ICollection<RoomHotel> RoomHotels { get; set; } = new List<RoomHotel>();
 }

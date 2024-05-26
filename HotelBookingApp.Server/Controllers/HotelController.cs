@@ -74,7 +74,7 @@ public class HotelController : ControllerBase
     public async Task<ActionResult> DeleteHotel(int id)
     {
         await _hotelService.DeleteAsync(id);
-                        return Ok();
+        return Ok();
            
     }
 }
