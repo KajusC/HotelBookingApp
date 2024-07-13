@@ -1,49 +1,15 @@
-import { useEffect, useState } from 'react';
+import Navbar from "./Navbar";
+import SearchBar from "./SearchBar";
 import './App.css';
+import DisplayCard from "./DisplayCard";
 
-function App() {
-    const [forecasts, setForecasts] = useState();
-
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
-
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
-
+export default function App() {
     return (
         <div>
-            <h1 id="tableLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
+            <Navbar/>
+            <SearchBar />
+            <DisplayCard pictureUrl={"https://imgs.search.brave.com/dbQOGFRbcKr9NO_IDmAxzbrl6X352tkcvNTApIRsGaQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTAw/NjE4NzEyMC9waG90/by9iZWF1dGlmdWwt/bW9kZXJuLWhvdGVs/LXJvb20uanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPTR4X2lw/SW1fcUVoUW93ai1w/cGlRZ1VBTFdQZEt0/RFg5T2d0SndXN1R1/WkE9"} title={"booking"} text={"Good one"}/>
+            <h1>Display</h1>
         </div>
     );
-    
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        const data = await response.json();
-        setForecasts(data);
-    }
 }
-
-export default App;

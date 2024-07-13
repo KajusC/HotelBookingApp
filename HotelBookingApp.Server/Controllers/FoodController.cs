@@ -20,14 +20,14 @@ public class FoodController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<FoodModel>>> GetFoods()
+    public async Task<ActionResult<IEnumerable<FoodDto>>> GetFoods()
     {
         var foods = await _foodService.GetAllAsync();
         return Ok(foods);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<FoodModel>> GetFoodById(int id)
+    public async Task<ActionResult<FoodDto>> GetFoodById(int id)
     {
         var food = await _foodService.GetByIdAsync(id);
         if (food == null)
@@ -39,7 +39,7 @@ public class FoodController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddFood([FromBody] FoodModel food)
+    public async Task<ActionResult> AddFood([FromBody] FoodDto food)
     {
         if (food == null)
         {
@@ -52,7 +52,7 @@ public class FoodController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> EditFood(int id, [FromBody] FoodModel food)
+    public async Task<ActionResult> EditFood(int id, [FromBody] FoodDto food)
     {
         if (food == null)
         {
@@ -85,27 +85,4 @@ public class FoodController : ControllerBase
         await _foodService.DeleteAsync(id);
             return Ok();
     }
-    [HttpGet("/Join")]
-    public async Task<ActionResult<IEnumerable<FoodHotelModel>>> GetFoodWithHotel()
-    {
-        var foodHotels = await _foodService.GetAllFoodHotelLinks();
-
-        return Ok(foodHotels);
-    }
-
-    [HttpPost("/JoinHotel/{foodId}/{hotelId}")]
-    public async Task<ActionResult> JoinFoodWithHotel(int foodId, int hotelId)
-    {
-        await _foodService.JoinFoodWithHotel(foodId, hotelId);
-        return Ok();
-    }
-
-    [HttpPost("JoinOrder/{foodId}/{orderId}")]
-    public async Task<ActionResult> JoinFoodWithOrder(int foodId, int orderId)
-    {
-        await _foodService.JoinFoodWithOrder(foodId, orderId);
-        return Ok();
-    }
-
-
 }

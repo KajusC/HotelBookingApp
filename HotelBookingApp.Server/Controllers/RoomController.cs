@@ -18,7 +18,7 @@ public class RoomController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<RoomModel>>> GetRooms([FromQuery] int HotelId = 0)
+    public async Task<ActionResult<IEnumerable<RoomDto>>> GetRooms([FromQuery] int HotelId = 0)
     {
         if (HotelId == 0)
         {
@@ -33,7 +33,7 @@ public class RoomController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<RoomModel>> GetRoomById(int id)
+    public async Task<ActionResult<RoomDto>> GetRoomById(int id)
     {
         var room = await _roomService.GetByIdAsync(id);
         if (room == null)
@@ -45,7 +45,7 @@ public class RoomController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddRoom([FromBody] RoomModel room)
+    public async Task<ActionResult> AddRoom([FromBody] RoomDto room)
     {
         if (room == null)
         {
@@ -58,7 +58,7 @@ public class RoomController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> EditRoom(int id, [FromBody] RoomModel room)
+    public async Task<ActionResult> EditRoom(int id, [FromBody] RoomDto room)
     {
         if (room == null)
         {

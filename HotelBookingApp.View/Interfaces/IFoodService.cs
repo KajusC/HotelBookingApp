@@ -4,10 +4,10 @@ using HotelBookingApp.Data.Entities.ManyToMany;
 
 namespace HotelBookingApp.Business.Interfaces;
 
-public interface IFoodService : ICrud<FoodModel>
+public interface IFoodService : ICrud<FoodDto>
 {
     Task JoinFoodWithHotel(int foodId, int hotelId);
     Task JoinFoodWithOrder(int foodId, int orderId);
 
-    Task<IEnumerable<FoodHotelModel>> GetAllFoodHotelLinks();
+    Task<IEnumerable<HotelFoodDto>> GetAllFoodHotelLinks();
 }

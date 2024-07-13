@@ -3,7 +3,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace HotelBookingApp.Business.DTO;
 
-public class UserModel
+public class UserDto
 {
     public int Id { get; set; }
     public string FirstName { get; set; }

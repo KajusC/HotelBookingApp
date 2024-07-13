@@ -1,0 +1,35 @@
+.login
+{
+    color: white;
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+a.signup
+{
+    color: white;
+    font-size: 1.15rem;
+    text-decoration: none;
+    border-color: whitesmoke;
+    border-width: 2px;
+    border-style: solid;
+    padding: 0.3rem 1rem 0.5rem 1rem;
+    border-radius: 1rem;
+    transition: 0.5s;
+}
+a.signup:hover
+{
+    color: white;
+    font-size: 1.15rem;
+    text-decoration: none;
+    border-color: whitesmoke;
+    border-width: 2px;
+    border-style: solid;
+    padding: 0.6rem 1.4rem 0.9rem 1.4rem;
+    border-radius: 1rem;
+    transition: 0.5s;
+}
+
+.nav-background{
+    background-color: #424C55;
+    padding: 1rem;
+}

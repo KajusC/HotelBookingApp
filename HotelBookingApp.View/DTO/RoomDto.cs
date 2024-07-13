@@ -3,7 +3,7 @@ using HotelBookingApp.Data.Entities.ManyToMany;
 
 namespace HotelBookingApp.Business.DTO;
 
-public class RoomModel
+public class RoomDto
 {
     public int Id { get; set; }
     public string Name { get; set; }

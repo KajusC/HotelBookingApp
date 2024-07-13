@@ -11,13 +11,13 @@ using HotelBookingApp.Data.Repositories;
 
 namespace HotelBookingApp.Business.Services;
 
-public class RoomService : GeneralService<RoomModel, Room>, IRoomService
+public class RoomService : GeneralService<RoomDto, Room>, IRoomService
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IRoomOrderRepository _roomOrderRepository;
     private readonly IHotelRepository _hotelRepository;
     private readonly IRoomHotelRepository _roomHotelRepository;
-    public RoomService(IRoomRepository repository, IMapper mapper, ILogger<RoomModel> logger, IRoomHotelRepository roomHotelRepository,
+    public RoomService(IRoomRepository repository, IMapper mapper, ILogger<RoomDto> logger, IRoomHotelRepository roomHotelRepository,
                     IOrderRepository orderRepository, IRoomOrderRepository roomOrderRepository, IHotelRepository hotelRepository) : base(repository, mapper, logger)
     {
         _orderRepository = orderRepository;
@@ -59,11 +59,11 @@ public class RoomService : GeneralService<RoomModel, Room>, IRoomService
         await _roomOrderRepository.AddAsync(roomOrder);
     }
 
-    public async Task<IEnumerable<RoomModel>> GetRoomsByHotelId(int hotelId)
+    public async Task<IEnumerable<RoomDto>> GetRoomsByHotelId(int hotelId)
     {
         var rooms = await _repository.GetAllAsync();
         var filtered = rooms.Where(h => h.RoomHotels.Any(rh => rh.HotelId == hotelId));
-        return _mapper.Map<IEnumerable<RoomModel>>(filtered);
+        return _mapper.Map<IEnumerable<RoomDto>>(filtered);
     }
 
     public async Task JoinRoomsWithHotel(int roomId, int hotelId)

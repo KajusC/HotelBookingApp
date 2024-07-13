@@ -1,12 +1,13 @@
 body {
+    background-color: transparents;
 }
 
-.search-bar
-{
-    position: absolute;
-    border: 0px
+.search-input {
+    width: 35svw;
+    transition: 0.5s;
+  }
 
-}
-.form-control {
-    background-color: #ffffff; /* Change this to the color you want */
+.search-input:focus {
+    width: 50svw;
+    transition: 0.5s;
 }

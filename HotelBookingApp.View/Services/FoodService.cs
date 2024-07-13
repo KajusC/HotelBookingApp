@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HotelBookingApp.Business.Services;
 
-public class FoodService : GeneralService<FoodModel, Food>, IFoodService
+public class FoodService : GeneralService<FoodDto, Food>, IFoodService
 {
     private readonly IFoodHotelRepository _foodHotelRepository;
     private readonly IFoodOrderRepository _foodOrderRepository;
@@ -19,7 +19,7 @@ public class FoodService : GeneralService<FoodModel, Food>, IFoodService
     private readonly IOrderRepository _orderRepository;
     public FoodService(IFoodRepository repository, IMapper mapper, IHotelRepository hotelRepository,
                         IFoodHotelRepository foodHotelRepository, IOrderRepository orderRepository,
-                        IFoodOrderRepository foodOrderRepository, ILogger<FoodModel> logger) 
+                        IFoodOrderRepository foodOrderRepository, ILogger<FoodDto> logger) 
                         : base(repository, mapper, logger)
     {
         _hotelRepository = hotelRepository;
@@ -97,9 +97,9 @@ public class FoodService : GeneralService<FoodModel, Food>, IFoodService
 
     }
 
-    public async Task<IEnumerable<FoodHotelModel>> GetAllFoodHotelLinks()
+    public async Task<IEnumerable<HotelFoodDto>> GetAllFoodHotelLinks()
     {
         var models = await _foodHotelRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<FoodHotelModel>>(models);
+        return _mapper.Map<IEnumerable<HotelFoodDto>>(models);
     }
 }

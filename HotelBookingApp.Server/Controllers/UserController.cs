@@ -20,14 +20,14 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserModel>>> GetCustomers()
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetCustomers()
     {
         var customers = await _userService.GetAllAsync();
         return Ok(customers);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserModel>> GetCustomerById(int id)
+    public async Task<ActionResult<UserDto>> GetCustomerById(int id)
     {
         var customer = await _userService.GetByIdAsync(id);
         if (customer == null)
@@ -39,14 +39,14 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddCustomer([FromBody] UserModel model)
+    public async Task<ActionResult> AddCustomer([FromBody] UserDto model)
     {
         await _userService.AddAsync(model);
         return Ok(model);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateCustomer(int id, [FromBody] UserModel model)
+    public async Task<ActionResult> UpdateCustomer(int id, [FromBody] UserDto model)
     {
         var customer = await _userService.GetByIdAsync(id);
         if (customer == null)

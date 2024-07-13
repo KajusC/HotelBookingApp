@@ -21,25 +21,25 @@ public class UserService : IUserService
         _userRepository = unit.UserRepository;
         _mapper = mapper;
     }
-    public async Task<IEnumerable<UserModel>> GetAllAsync()
+    public async Task<IEnumerable<UserDto>> GetAllAsync()
     {
         var customers = await _userRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<UserModel>>(customers);
+        return _mapper.Map<IEnumerable<UserDto>>(customers);
     }
 
-    public async Task<UserModel> GetByIdAsync(int id)
+    public async Task<UserDto> GetByIdAsync(int id)
     {
         var customer = await _userRepository.GetByIdAsync(id);
-        return _mapper.Map<UserModel>(customer);
+        return _mapper.Map<UserDto>(customer);
     }
 
-    public async Task AddAsync(UserModel model)
+    public async Task AddAsync(UserDto model)
     {
         var customer = _mapper.Map<User>(model);
         var result = await _userRepository.AddAsync(customer);
     }
 
-    public async Task UpdateAsync(UserModel user)
+    public async Task UpdateAsync(UserDto user)
     {
         if (user == null)
         {
