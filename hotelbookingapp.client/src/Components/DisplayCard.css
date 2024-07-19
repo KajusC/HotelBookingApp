@@ -1,0 +1,26 @@
+.sizing
+{
+    max-width: 75%;
+}
+.bold
+{
+    font-weight: bold;
+}
+.more
+{
+    font-size: 0.82rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    transition: 0.5s;
+
+}
+.more:hover
+{
+    overflow: visible;
+    text-overflow: unset;
+    display: -webkit-box;
+    -webkit-line-clamp: unset;
+    transition: 0.5s;
+}

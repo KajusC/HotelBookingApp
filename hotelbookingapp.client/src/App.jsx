@@ -1,20 +1,68 @@
-import Navbar from "./Navbar";
-import SearchBar from "./SearchBar";
-import './App.css';
-import DisplayCard from "./DisplayCard";
+import "./App.css";
+import Navbar from "./Components/Navbar.jsx";
+import SearchBar from "./Components/SearchBar.jsx";
+import DisplayCard from "./Components/DisplayCard.jsx";
+import SearchWindow from "./Components/SearchWindow.jsx";
+import HorizontalSlider from "./Components/HorizontalSlider.jsx";
 
+const picture = [
+  "https://images.pexels.com/photos/5371575/pexels-photo-5371575.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+];
 export default function App() {
-    return (
-        <div>
-            <Navbar/>
-            <SearchBar />
-            <div className="d-flex justify-content-center row-cols-2">
-            <DisplayCard pictureUrl={"https://imgs.search.brave.com/dbQOGFRbcKr9NO_IDmAxzbrl6X352tkcvNTApIRsGaQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTAw/NjE4NzEyMC9waG90/by9iZWF1dGlmdWwt/bW9kZXJuLWhvdGVs/LXJvb20uanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPTR4X2lw/SW1fcUVoUW93ai1w/cGlRZ1VBTFdQZEt0/RFg5T2d0SndXN1R1/WkE9"} title={"booking"} text={"Good one"}/>
-            <DisplayCard pictureUrl={"https://imgs.search.brave.com/dbQOGFRbcKr9NO_IDmAxzbrl6X352tkcvNTApIRsGaQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTAw/NjE4NzEyMC9waG90/by9iZWF1dGlmdWwt/bW9kZXJuLWhvdGVs/LXJvb20uanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPTR4X2lw/SW1fcUVoUW93ai1w/cGlRZ1VBTFdQZEt0/RFg5T2d0SndXN1R1/WkE9"} title={"booking"} text={"Good one"}/>
-            <DisplayCard pictureUrl={"https://imgs.search.brave.com/dbQOGFRbcKr9NO_IDmAxzbrl6X352tkcvNTApIRsGaQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTAw/NjE4NzEyMC9waG90/by9iZWF1dGlmdWwt/bW9kZXJuLWhvdGVs/LXJvb20uanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPTR4X2lw/SW1fcUVoUW93ai1w/cGlRZ1VBTFdQZEt0/RFg5T2d0SndXN1R1/WkE9"} title={"booking"} text={"Good one"}/>
-            <DisplayCard pictureUrl={"https://imgs.search.brave.com/dbQOGFRbcKr9NO_IDmAxzbrl6X352tkcvNTApIRsGaQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTAw/NjE4NzEyMC9waG90/by9iZWF1dGlmdWwt/bW9kZXJuLWhvdGVs/LXJvb20uanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPTR4X2lw/SW1fcUVoUW93ai1w/cGlRZ1VBTFdQZEt0/RFg5T2d0SndXN1R1/WkE9"} title={"booking"} text={"Good one"}/>
-            </div>
-            <h1>Display</h1>
-        </div>
-    );
+  return (
+    <div>
+      <Navbar />
+      <SearchWindow SearchBar={SearchBar} />
+      <div className="d-flex justify-content-center row-cols-2">
+        <HorizontalSlider title={"Best deals"}>
+          <DisplayCard
+            hotelName="Hotel 1"
+            rating="4.5"
+            hotelAddress="Brimmi UK,  1234dawdawddwdqwdweadwdawdawd"
+            pricing="$100"
+            beds="2"
+            guests="4"
+            pictureUrl={picture}
+          />
+          <DisplayCard
+            hotelName="Hotel 1"
+            rating="4.5"
+            hotelAddress="Brimmi UK,  1234dawdawddwdqwdweadwdawdawd"
+            pricing="$100"
+            beds="2"
+            guests="4"
+            pictureUrl={picture}
+          />
+          <DisplayCard
+            hotelName="Hotel 1"
+            rating="4.5"
+            hotelAddress="Brimmi UK,  1234dawdawddwdqwdweadwdawdawd"
+            pricing="$100"
+            beds="2"
+            guests="4"
+            pictureUrl={picture}
+          />
+          <DisplayCard
+            hotelName="Hotel 1"
+            rating="4.5"
+            hotelAddress="Brimmi UK,  1234dawdawddwdqwdweadwdawdawd"
+            pricing="$100"
+            beds="2"
+            guests="4"
+            pictureUrl={picture}
+          />
+                    <DisplayCard
+            hotelName="Hotel 1"
+            rating="4.5"
+            hotelAddress="Brimmi UK,  1234dawdawddwdqwdweadwdawdawd"
+            pricing="$100"
+            beds="2"
+            guests="4"
+            pictureUrl={picture}
+          />
+        </HorizontalSlider>
+      </div>
+    </div>
+  );
 }

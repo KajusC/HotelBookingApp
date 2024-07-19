@@ -1,0 +1,10 @@
+ .large-2::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;
+  }
+  .large-2::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    box-shadow: inset 0 0 6px rgba(185, 22, 22, 0.3);
+    background-color: #999999;
+    border: 1px solid #e7e7e7;
+  }

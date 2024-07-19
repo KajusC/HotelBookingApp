@@ -1,0 +1,48 @@
+.login
+{
+    color: black;
+    font-size: 1.2rem;
+    text-decoration: none;
+    font-family: 'Roboto';
+}
+a.signup
+{
+    color: white;
+    font-size: 1.15rem;
+    text-decoration: none;
+    border-color: #272932;
+    background-color: #272932;
+    border-width: 2px;
+    border-style: solid;
+    padding: 0.3rem 1rem 0.5rem 1rem;
+    border-radius: 8px;
+    transition: 0.5s;
+    font-family: 'Roboto';
+}
+a.signup:hover
+{
+    color: white;
+    font-size: 1.15rem;
+    text-decoration: none;
+    border-width: 2px;
+    border-style: solid;
+    padding: 0.4rem 1.1rem 0.6rem 1.1rem;
+    border-radius: 8px;
+    transition: 0.5s;
+}
+
+.nav-background{
+    background-color: #DFBE99;
+    padding: 1rem;
+}
+.logo
+{
+    font-size: 3rem;
+    font-family: 'Great vibes';
+    color: #272932;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #373941;
+}
