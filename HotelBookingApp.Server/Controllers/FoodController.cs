@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HotelBookingApp.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class FoodController : ControllerBase
 {
     private readonly IFoodService _foodService;
