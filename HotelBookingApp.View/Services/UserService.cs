@@ -6,20 +6,25 @@ using HotelBookingApp.Data.Interfaces;
 using HotelBookingApp.Data.Entities;
 using System.Reflection;
 using HotelBookingApp.Business.Validity;
+using Microsoft.Extensions.Logging;
 
 namespace HotelBookingApp.Business.Services;
 
 public class UserService : IUserService
 {
-    private readonly IUnitOfWork _unit;
-    private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly ILogger<UserDto> _logger;
 
-    public UserService(IUnitOfWork unit, IMapper mapper)
+    private readonly IUserRepository _userRepository;
+
+    public UserService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UserDto> logger)
     {
-        _unit = unit;
-        _userRepository = unit.UserRepository;
+        _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _logger = logger;
+
+        _userRepository = unitOfWork.UserRepository;
     }
     public async Task<IEnumerable<UserDto>> GetAllAsync()
     {
@@ -41,10 +46,7 @@ public class UserService : IUserService
 
     public async Task UpdateAsync(UserDto user)
     {
-        if (user == null)
-        {
-            throw new ArgumentNullException(nameof(user));
-        }
+        ArgumentNullException.ThrowIfNull(user);
 
         var existingCustomer = await _userRepository.GetByIdAsync(user.Id);
         if (existingCustomer == null)
