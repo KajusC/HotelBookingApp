@@ -2,10 +2,34 @@
     margin: 0;
     padding: 0;
     text-align: center;
-    background-color: white;
+    background-color: #f3f3f3;
 }
 
 th, td {
     padding-left: 1rem;
     padding-right: 1rem;
 }
+/* App.css */
+
+.fade-enter {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  
+  .fade-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 500ms, transform 500ms;
+  }
+  
+  .fade-exit {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  .fade-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 500ms, transform 500ms;
+  }
+  

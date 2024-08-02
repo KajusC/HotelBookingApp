@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HotelBookingApp.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class HotelController : ControllerBase
 {
     private readonly IHotelService _hotelService;
@@ -18,7 +18,7 @@ public class HotelController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<HotelModel>>> GetHotels([FromQuery] string countryOrCity = null!)
+    public async Task<ActionResult<IEnumerable<HotelDto>>> GetHotels([FromQuery] string countryOrCity = null!)
     {
         if (string.IsNullOrEmpty(countryOrCity))
         {
@@ -34,7 +34,7 @@ public class HotelController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<HotelModel>> GetHotelById(int id)
+    public async Task<ActionResult<HotelDto>> GetHotelById(int id)
     {
         var hotel = await _hotelService.GetByIdAsync(id);
         if (hotel == null)
@@ -46,7 +46,7 @@ public class HotelController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddHotel([FromBody] HotelModel hotel)
+    public async Task<ActionResult> AddHotel([FromBody] HotelDto hotel)
     {
         if (hotel == null)
         {
@@ -59,7 +59,7 @@ public class HotelController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> EditHotel(int id, [FromBody] HotelModel hotel)
+    public async Task<ActionResult> EditHotel(int id, [FromBody] HotelDto hotel)
     {
         if (hotel == null)
         {

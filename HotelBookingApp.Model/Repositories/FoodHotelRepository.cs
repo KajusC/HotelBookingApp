@@ -23,7 +23,7 @@ public class FoodHotelRepository : GeneralRepository<FoodHotel>, IFoodHotelRepos
         return await _dbSet
                 .Include(fh => fh.Food)
                 .Include(fh => fh.Hotel)
-            .FirstOrDefaultAsync(fh => fh.Id == id);
+                .FirstOrDefaultAsync(fh => fh.Id == id);
     }
 
     public override async Task AddAsync(FoodHotel entity)

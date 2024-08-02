@@ -3,7 +3,7 @@ using HotelBookingApp.Data.Entities.ManyToMany;
 
 namespace HotelBookingApp.Business.DTO;
 
-public class OrderModel
+public class OrderDto
 {
     public int Id { get; set; }
     public double Price { get; set; }

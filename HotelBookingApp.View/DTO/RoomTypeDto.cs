@@ -2,7 +2,7 @@
 
 namespace HotelBookingApp.Business.DTO;
 
-public class RoomTypeModel
+public class RoomTypeDto
 {
     public int Id { get; set; }
     public string Name { get; set; }

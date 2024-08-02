@@ -2,9 +2,9 @@
 
 namespace HotelBookingApp.Business.Interfaces;
 
-public interface IHotelService : ICrud<HotelModel>
+public interface IHotelService : ICrud<HotelDto>
 {
-    public Task<IEnumerable<HotelModel>> GetHotelByFoodInclusion(int foodInclusionId); //Breakfast, Lunch, Dinner etc.
-    public Task<IEnumerable<HotelModel>> GetHotelByRoomTypes(int roomTypeId); //Single, Double, Triple etc.
-    public Task<IEnumerable<HotelModel>> GetHotelByCountryOrCity(string countryOrCity);
+    public Task<IEnumerable<HotelDto>> GetHotelByFoodInclusion(int foodInclusionId); //Breakfast, Lunch, Dinner etc.
+    public Task<IEnumerable<HotelDto>> GetHotelByRoomTypes(int roomTypeId); //Single, Double, Triple etc.
+    public Task<IEnumerable<HotelDto>> GetHotelByCountryOrCity(string countryOrCity);
 }

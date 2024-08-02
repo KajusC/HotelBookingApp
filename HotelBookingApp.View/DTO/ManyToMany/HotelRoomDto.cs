@@ -1,8 +1,8 @@
 ﻿namespace HotelBookingApp.Business.DTO.ManyToMany;
 
-public class FoodHotelModel
+public class HotelRoomDto
 {
     public int Id { get; set; }
-    public int FoodId { get; set; }
+    public int RoomId { get; set; }
     public int HotelId { get; set; }
 }

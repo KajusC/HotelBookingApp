@@ -8,7 +8,6 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly HotelDataContext _context;
 
-    //dI injection thtough constructor
     public UnitOfWork(HotelDataContext hotelDataContext, IUserRepository user, IFoodRepository food, 
         IHotelRepository hotel, IOrderRepository order, IRoomRepository room, IRoomTypeRepository roomType,
         IFoodHotelRepository foodHotel, IFoodOrderRepository foodOrder, IRoomOrderRepository roomOrder, IRoomHotelRepository roomHotelRepository)

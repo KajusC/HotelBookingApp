@@ -11,24 +11,63 @@ using HotelBookingApp.Data.Repositories;
 
 namespace HotelBookingApp.Business.Services;
 
-public class RoomService : GeneralService<RoomModel, Room>, IRoomService
+public class RoomService : IRoomService
 {
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+    private readonly ILogger<RoomDto> _logger;
+
+    private readonly IRoomRepository _roomRepository;
     private readonly IOrderRepository _orderRepository;
     private readonly IRoomOrderRepository _roomOrderRepository;
     private readonly IHotelRepository _hotelRepository;
     private readonly IRoomHotelRepository _roomHotelRepository;
-    public RoomService(IRoomRepository repository, IMapper mapper, ILogger<RoomModel> logger, IRoomHotelRepository roomHotelRepository,
-                    IOrderRepository orderRepository, IRoomOrderRepository roomOrderRepository, IHotelRepository hotelRepository) : base(repository, mapper, logger)
+    public RoomService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<RoomDto> logger)
     {
-        _orderRepository = orderRepository;
-        _roomOrderRepository = roomOrderRepository;
-        _hotelRepository = hotelRepository;
-        _roomHotelRepository = roomHotelRepository;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+        _logger = logger;
+
+        _roomRepository = unitOfWork.RoomRepository;
+        _orderRepository = unitOfWork.OrderRepository;
+        _roomOrderRepository = unitOfWork.RoomOrderRepository;
+        _hotelRepository = unitOfWork.HotelRepository;
+        _roomHotelRepository = unitOfWork.RoomHotelRepository;
+    }
+
+    public async Task<IEnumerable<RoomDto>> GetAllAsync()
+    {
+        var entities = await _roomRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<RoomDto>>(entities);
+    }
+
+    public async Task<RoomDto> GetByIdAsync(int id)
+    {
+        var entity = await _roomRepository.GetByIdAsync(id);
+        return _mapper.Map<RoomDto>(entity);
+    }
+
+    public async Task AddAsync(RoomDto model)
+    {
+        var entity = _mapper.Map<Room>(model);
+        await _roomRepository.AddAsync(entity);
+    }
+
+    public async Task UpdateAsync(RoomDto model)
+    {
+        var entity = _mapper.Map<Room>(model);
+        await _roomRepository.UpdateAsync(entity);
+    }
+
+    public async Task DeleteAsync(int modelId)
+    {
+        var entity = await _roomRepository.GetByIdAsync(modelId);
+        await _roomRepository.DeleteAsync(entity);
     }
 
     public async Task JoinRoomWithOrder(int roomId, int orderId)
     {
-        var room = await _repository.GetByIdAsync(roomId);
+        var room = await _roomRepository.GetByIdAsync(roomId);
         if (room == null)
         {
             throw new ServiceException($"room with Id {roomId} does not exist.");
@@ -48,10 +87,8 @@ public class RoomService : GeneralService<RoomModel, Room>, IRoomService
             Order = order,
         };
 
-
         room.RoomOrders.Add(roomOrder);
-        await _repository.UpdateAsync(room);
-        
+        await _roomRepository.UpdateAsync(room);
 
         order.RoomOrders.Add(roomOrder);
         await _orderRepository.UpdateAsync(order);
@@ -59,11 +96,11 @@ public class RoomService : GeneralService<RoomModel, Room>, IRoomService
         await _roomOrderRepository.AddAsync(roomOrder);
     }
 
-    public async Task<IEnumerable<RoomModel>> GetRoomsByHotelId(int hotelId)
+    public async Task<IEnumerable<RoomDto>> GetRoomsByHotelId(int hotelId)
     {
-        var rooms = await _repository.GetAllAsync();
+        var rooms = await _roomRepository.GetAllAsync();
         var filtered = rooms.Where(h => h.RoomHotels.Any(rh => rh.HotelId == hotelId));
-        return _mapper.Map<IEnumerable<RoomModel>>(filtered);
+        return _mapper.Map<IEnumerable<RoomDto>>(filtered);
     }
 
     public async Task JoinRoomsWithHotel(int roomId, int hotelId)
@@ -74,7 +111,7 @@ public class RoomService : GeneralService<RoomModel, Room>, IRoomService
             throw new ServiceException($"Hotel with Id {hotelId} does not exist.");
         }
         
-        var room = await _repository.GetByIdAsync(roomId);
+        var room = await _roomRepository.GetByIdAsync(roomId);
         if (room == null)
         {
             throw new ServiceException($"Room with Id {roomId} does not exist.");
@@ -92,10 +129,8 @@ public class RoomService : GeneralService<RoomModel, Room>, IRoomService
         await _hotelRepository.UpdateAsync(hotel);
 
         room.RoomHotels.Add(roomHotel);
-        await _repository.UpdateAsync(room);
+        await _roomRepository.UpdateAsync(room);
 
         await _roomHotelRepository.AddAsync(roomHotel);
-
-
     }
 }

@@ -1,49 +1,85 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+import "./App.css";
 
-function App() {
-    const [forecasts, setForecasts] = useState();
+import Navbar from "./Components/Navbar.jsx";
+import SearchBar from "./Components/SearchBar.jsx";
+import DisplayCard from "./Components/DisplayCard.jsx";
+import SearchWindow from "./Components/SearchWindow.jsx";
+import HorizontalSlider from "./Components/HorizontalSlider.jsx";
+import TitleCover from "./Components/TitleCover.jsx";
 
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
+import { Route, Routes } from "react-router-dom";
+import { getHotelByCountryOrCity } from "./functions/api.js";
+import { useEffect, useState } from "react";
+import { SearchContext } from "./contexts/search-context.jsx";
 
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
+const picture = [
+  "https://images.pexels.com/photos/5371575/pexels-photo-5371575.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+];
 
-    return (
-        <div>
-            <h1 id="tableLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-        </div>
-    );
-    
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        const data = await response.json();
-        setForecasts(data);
-    }
+export default function App() {
+  const [hotels, setHotels] = useState([]);
+  const [searches, setSearches] = useState({
+    countryOrCity: " ",
+    checkIn: " ",
+    checkOut: " ",
+    guests: 0,
+  });
+
+  function handleSearch(searches) {
+    setSearches(searches);
+    console.log(searches);
+  }
+
+  useEffect(() => {
+    const query = searches.countryOrCity;
+    getHotelByCountryOrCity(query).then((data) => {
+      setHotels(data);
+    });
+  }, [searches.countryOrCity]);
+
+  const SearchTemplateCtx = {
+    countryOrCity: searches.countryOrCity,
+    checkIn: searches.checkIn,
+    checkOut: searches.checkOut,
+    guests: searches.guests,
+    handleSearch: handleSearch,
+  };
+
+  return (
+    <>
+      <Navbar />
+      <SearchContext.Provider value={SearchTemplateCtx}>
+        <SearchWindow SearchBar={SearchBar} />
+        <Routes>
+          <Route path="/" element={<TitleCover />} />
+          <Route
+            path="/bookings"
+            element={
+              <div className="d-flex justify-content-center row-cols-2">
+                <HorizontalSlider title={"Best deals"} id="bottom">
+                  {hotels.map((hotel, index) => {
+                    console.log(hotel);
+                    return(
+                    <DisplayCard
+                      key={index}
+                      hotelName={hotel.name}
+                      // rating={hotel.rating} 
+                      hotelAddress={ `${hotel.city}, ${hotel.country}` }
+                      // pricing={hotel.price}
+                      // beds={hotel.beds}
+                      // guests={hotel.guests}
+                      pictureUrl={[hotel.imageUrl]}
+                      show
+                    />
+                  )
+                  })}
+                </HorizontalSlider>
+              </div>
+            }
+          />
+        </Routes>
+      </SearchContext.Provider>
+    </>
+  );
 }
-
-export default App;

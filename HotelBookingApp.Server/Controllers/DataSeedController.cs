@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace HotelBookingApp.Server.Controllers
 {
-    [Route("api/[controller]")]
+    
     [ApiController]
+    [Route("api/[controller]")]
     public class DataSeedController : ControllerBase
     {
         private readonly IServiceProvider _serviceProvider;
