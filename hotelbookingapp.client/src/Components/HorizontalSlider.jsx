@@ -1,5 +1,3 @@
-import './horizontalSlider.css';
-
 function HorizontalSlider({title, children}) {
   return (
 <div className="container-fluid w-100 pt-3">

@@ -1,45 +1,55 @@
-import "./DisplayCard.css";
 import Container from "react-bootstrap/Container";
 import PictureCarousel from "./PictureCarousel";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { MdOutlineStarBorderPurple500 } from "react-icons/md";
+import { FaStar } from "react-icons/fa6";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdOutlineBed } from "react-icons/md";
 import { IoPersonOutline } from "react-icons/io5";
 
-
-export default function DisplayCard({ hotelName, rating, hotelAddress, pricing, beds, guests, pictureUrl}) {
+export default function DisplayCard({
+  hotelName = "X",
+  rating = "X",
+  hotelAddress,
+  pricing = "X",
+  beds = "X",
+  guests = "X",
+  pictureUrl,
+}) {
   return (
     <div className="col-md-3 pt-2 pb-4">
       <div className="card sizing d-flex justify-content-center">
-        <PictureCarousel links={pictureUrl}/>
+        <PictureCarousel links={pictureUrl} showControls={true} />
         <div className="card-body">
-          <Container >
-            <Row xs={2} md={3} className="d-flex flex-row pb-3">
-              <Col className="d-flex justify-content-end">{hotelName}</Col>
-              <Col className="d-flex justify-content-start">
-                <MdOutlineStarBorderPurple500 /> {rating}
-              </Col>
-              <span className="more">
-                <IoLocationSharp /> {hotelAddress}
-              </span>
-            </Row>
-            <div xs={2} md={5} className="d-flex align-items-end pb-3">
-              <div className="d-flex align-items-center">
-                <h3 className="bold d-sm-flex">{pricing}</h3>
-                <p className="d-flex align-items-end pt-2">/per night</p>
-              </div>
-            </div>
-            <Row xs="auto">
-              <Col className="pb-4">
-                <MdOutlineBed /> {beds} beds
-              </Col>
-              <Col>
-                <IoPersonOutline /> {guests} guests
-              </Col>
-            </Row>
-          </Container>
+          <div className="d-flex justify-content-between">
+            <h5 className="card-title bold pb-4">{hotelName}</h5>
+            <h5 className="card-title flex">
+              {rating}
+              <FaStar fill="yellow" className="" />
+            </h5>
+          </div>
+          <div className="d-flex justify-content-between">
+            <p className="card-text flex pb-3">
+              <IoLocationSharp className="mr-3" />
+              {hotelAddress}
+            </p>
+          </div>
+          <div className="d-flex justify-content">
+            <h3 className="card-text flex">
+              {pricing}
+              <p className="text-muted font-small pt-3">/night</p>
+            </h3>
+          </div>
+          <div className="d-flex justify-content-between grid">
+            <p className="card-text flex">
+              <MdOutlineBed className="mr-3" />
+              {beds} beds
+            </p>
+            <p className="card-text flex">
+              <IoPersonOutline className="mr-3" />
+              {guests} guests
+            </p>
+          </div>
           <a href="#" className="btn btn-custom">
             Book now!
           </a>
