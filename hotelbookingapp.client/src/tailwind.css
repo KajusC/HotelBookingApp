@@ -10,3 +10,13 @@ input[type="text"]:not(:placeholder-shown) ~ .input-text{
 .font-small {
   font-size: 0.8rem;
 }
+
+@layer utilities {
+  .scroll-horizontal {
+    @apply overflow-x-auto;
+  }
+
+  .scroll-vertical {
+    @apply overflow-y-auto;
+  }
+}

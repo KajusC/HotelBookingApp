@@ -33,8 +33,8 @@ public class AutoMapperConfig : Profile
             .ReverseMap();
 
         CreateMap<Hotel, HotelDto>()
-            .ForMember(dest => dest.RoomHotelIds, opt => opt.MapFrom(src => src.RoomHotels.Select(i => i.Id)))
-            .ForMember(dest => dest.FoodHotelIds, opt => opt.MapFrom(src => src.FoodHotels.Select(i => i.Id)))
+            .ForMember(dest => dest.RoomHotelIds, opt => opt.MapFrom(src => src.HotelRooms.Select(i => i.Id)))
+            .ForMember(dest => dest.FoodHotelIds, opt => opt.MapFrom(src => src.HotelFoods.Select(i => i.Id)))
             .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(i => i.Id)))
             .ReverseMap();
         CreateMap<Order, OrderDto>()

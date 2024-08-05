@@ -24,6 +24,6 @@ public class RoomHotelRepository : GeneralRepository<RoomHotel>, IRoomHotelRepos
         return await _dbSet
                 .Include(rh => rh.Room)
                 .Include(rh => rh.Hotel)
-            .FirstOrDefaultAsync(rh => rh.Id == id);
+            .FirstOrDefaultAsync(rh => rh.Id == id) ?? throw new ArgumentException("RoomHotel with this id does not exist");
     }
 }

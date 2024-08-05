@@ -1,11 +1,11 @@
-function HorizontalSlider({title, children}) {
+function HorizontalSlider({ title, children }) {
   return (
-<div className="container-fluid w-100 pt-3">
-    <h1 className="text-center">{title}</h1>
-    <div className="d-flex flex-row flex-nowrap overflow-auto large-2">
+    <div className="overflow-x-auto md:overflow-x-auto overflow-y-auto">
+      <h1 className="text-center">{title}</h1>
+      <div className="flex flex-nowrap md:flex-row w-auto md:w-[40rem] flex-col gap-5 md:px-0">
         {children}
+      </div>
     </div>
-</div>
   );
 }
 

@@ -26,13 +26,31 @@ public class HotelService : IHotelService
     public async Task<IEnumerable<HotelDto>> GetAllAsync()
     {
         var entities = await _hotelRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<HotelDto>>(entities);
+        var mapped = _mapper.Map<IEnumerable<HotelDto>>(entities);
+
+        foreach (var hotel in mapped)
+        {
+            hotel.MinBedCount = await GetMinBedCount(hotel.Id);
+            hotel.MaxBedCount = await GetMaxBedCount(hotel.Id);
+            hotel.minGuestCount = await GetMinGuestCount(hotel.Id);
+            hotel.maxGuestCount = await GetMaxGuestCount(hotel.Id);
+            hotel.AveragePrice = await GetAveragePrice(hotel.Id);
+        }
+
+        return mapped;
     }
 
     public async Task<HotelDto> GetByIdAsync(int id)
     {
         var entity = await _hotelRepository.GetByIdAsync(id);
-        return _mapper.Map<HotelDto>(entity);
+        var mapped = _mapper.Map<HotelDto>(entity);
+
+        mapped.MinBedCount = await GetMinBedCount(mapped.Id);
+        mapped.MaxBedCount = await GetMaxBedCount(mapped.Id);
+        mapped.minGuestCount = await GetMinGuestCount(mapped.Id);
+        mapped.maxGuestCount = await GetMaxGuestCount(mapped.Id);
+        mapped.AveragePrice = await GetAveragePrice(mapped.Id);
+        return mapped;
     }
 
     public async Task AddAsync(HotelDto model)
@@ -56,21 +74,79 @@ public class HotelService : IHotelService
     public async Task<IEnumerable<HotelDto>> GetHotelByFoodInclusion(int foodInclusionId)
     {
         var hotels = await _hotelRepository.GetAllAsync();
-        var filtered = hotels.Where(h => h.FoodHotels.Any(fh => fh.FoodId == foodInclusionId));
-        return _mapper.Map<IEnumerable<HotelDto>>(filtered);
+        var filtered = hotels.Where(h => h.HotelFoods.Any(fh => fh.FoodId == foodInclusionId));
+        var mapped = _mapper.Map<IEnumerable<HotelDto>>(filtered);
+
+        foreach (var hotel in mapped)
+        {
+            hotel.MinBedCount = await GetMinBedCount(hotel.Id);
+            hotel.MaxBedCount = await GetMaxBedCount(hotel.Id);
+            hotel.minGuestCount = await GetMinGuestCount(hotel.Id);
+            hotel.maxGuestCount = await GetMaxGuestCount(hotel.Id);
+            hotel.AveragePrice = await GetAveragePrice(hotel.Id);
+        }
+
+        return mapped;
     }
 
     public async Task<IEnumerable<HotelDto>> GetHotelByRoomTypes(int roomTypeId)
     {
         var hotels = await _hotelRepository.GetAllAsync();
-        var filtered = hotels.Where(h => h.RoomHotels.Any(rh => rh.Room.RoomTypeId == roomTypeId));
-        return _mapper.Map<IEnumerable<HotelDto>>(filtered);
+        var filtered = hotels.Where(h => h.HotelRooms.Any(rh => rh.Room.RoomTypeId == roomTypeId));
+        var mapped = _mapper.Map<IEnumerable<HotelDto>>(filtered);
+
+        foreach (var hotel in mapped)
+        {
+            hotel.MinBedCount = await GetMinBedCount(hotel.Id);
+            hotel.MaxBedCount = await GetMaxBedCount(hotel.Id);
+            hotel.minGuestCount = await GetMinGuestCount(hotel.Id);
+            hotel.maxGuestCount = await GetMaxGuestCount(hotel.Id);
+            hotel.AveragePrice = await GetAveragePrice(hotel.Id);
+        }
+
+        return mapped;
     }
 
     public async Task<IEnumerable<HotelDto>> GetHotelByCountryOrCity(string countryOrCity)
     {
         var hotels = await _hotelRepository.GetAllAsync();
-        var filtered = hotels.Where(h => h.Country == countryOrCity || h.City == countryOrCity);
-        return _mapper.Map<IEnumerable<HotelDto>>(filtered);
+        var filtered = hotels.Where(h => h.Country.ToLower() == countryOrCity || h.City.ToLower() == countryOrCity);
+        var mapped = _mapper.Map<IEnumerable<HotelDto>>(filtered);
+
+        foreach (var hotel in mapped)
+        {
+            hotel.MinBedCount = await GetMinBedCount(hotel.Id);
+            hotel.MaxBedCount = await GetMaxBedCount(hotel.Id);
+            hotel.minGuestCount = await GetMinGuestCount(hotel.Id);
+            hotel.maxGuestCount = await GetMaxGuestCount(hotel.Id);
+            hotel.AveragePrice = await GetAveragePrice(hotel.Id);
+        }
+
+        return mapped;
+    }
+    private async Task<int> GetMinGuestCount(int hotelId)
+    {
+        var hotel = await _hotelRepository.GetByIdAsync(hotelId);
+        return hotel.HotelRooms.Min(rh => rh.Room.Capacity);
+    }
+    private async Task<int> GetMaxGuestCount(int hotelId)
+    {
+        var hotel = await _hotelRepository.GetByIdAsync(hotelId);
+        return hotel.HotelRooms.Max(rh => rh.Room.Capacity);
+    }
+    private async Task<int> GetMinBedCount(int hotelId)
+    {
+        var hotel = await _hotelRepository.GetByIdAsync(hotelId);
+        return hotel.HotelRooms.Min(rh => rh.Room.BedCount);
+    }
+    private async Task<int> GetMaxBedCount(int hotelId)
+    {
+        var hotel = await _hotelRepository.GetByIdAsync(hotelId);
+        return hotel.HotelRooms.Max(rh => rh.Room.BedCount);
+    }
+    public async Task<double> GetAveragePrice(int hotelId)
+    {
+        var hotel = await _hotelRepository.GetByIdAsync(hotelId);
+        return hotel.HotelRooms.Average(rh => rh.Room.Price);
     }
 }

@@ -24,6 +24,6 @@ public class FoodOrderRepository : GeneralRepository<FoodOrder>, IFoodOrderRepos
         return await _dbSet
             .Include(fo => fo.Food)
             .Include(fo => fo.Order)
-            .FirstOrDefaultAsync(fo => fo.Id == id);
+            .FirstOrDefaultAsync(fo => fo.Id == id) ?? throw new ArgumentException("FoodOrder with this id does not exist");
     }
 }

@@ -20,7 +20,18 @@ namespace HotelBookingApp.Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddCors();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    policy =>
+                    {
+                        policy.WithOrigins("https://192.168.88.44:5173")  // React app URL
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    });
+            });
+
+
 
             // Add services to the container.
             builder.Services.AddDbContext<HotelDataContext>(options =>
@@ -66,6 +77,8 @@ namespace HotelBookingApp.Server
                 .AllowAnyHeader()
                 .WithOrigins("https://localhost:5173", "http://localhost:5188", "https://localhost:7103")
                 .AllowCredentials());
+
+            app.UseCors("AllowSpecificOrigin");
 
 
             app.UseDefaultFiles();

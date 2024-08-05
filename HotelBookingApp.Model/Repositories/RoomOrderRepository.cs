@@ -23,6 +23,6 @@ public class RoomOrderRepository : GeneralRepository<RoomOrder>, IRoomOrderRepos
         return await _dbSet
             .Include(ro => ro.Room)
             .Include(ro => ro.Order)
-            .FirstOrDefaultAsync(ro => ro.Id == id);
+            .FirstOrDefaultAsync(ro => ro.Id == id) ?? throw new ArgumentException("RoomOrder with this id does not exist");
     }
 }

@@ -55,8 +55,8 @@ namespace HotelBookingApp.Data
             // Seed other data
             var hotels = new[]
             {
-                new Hotel { Name = "Hotel One", Address = "789 Pine St", City = "Big City", Country = "USA", PhoneNumber = "1111111111", Email = "contact@hotelone.com", Website = "www.hotelone.com", Description = "A luxurious hotel.", ImageUrl = @"https://cdn.britannica.com/96/115096-050-5AFDAF5D/Bellagio-Hotel-Casino-Las-Vegas.jpg" },
-                new Hotel { Name = "Hotel Two", Address = "123 Oak St", City = "Small Town", Country = "USA", PhoneNumber = "2222222222", Email = "contact@hoteltwo.com", Website = "www.hoteltwo.com", Description = "A cozy hotel.", ImageUrl = @"https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc=" }
+                new Hotel { Name = "Hotel One", Address = "789 Pine St", City = "Big City", Country = "USA", PhoneNumber = "1111111111", Email = "contact@hotelone.com", Website = "www.hotelone.com", Description = "A luxurious hotel.", ImageUrl = @"https://cdn.britannica.com/96/115096-050-5AFDAF5D/Bellagio-Hotel-Casino-Las-Vegas.jpg", Rating = 3.4 },
+                new Hotel { Name = "Hotel Two", Address = "123 Oak St", City = "Small Town", Country = "USA", PhoneNumber = "2222222222", Email = "contact@hoteltwo.com", Website = "www.hoteltwo.com", Description = "A cozy hotel.", ImageUrl = @"https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc=", Rating = 4.8 }
             };
 
             var roomTypes = new[]
@@ -68,10 +68,10 @@ namespace HotelBookingApp.Data
 
             var rooms = new[]
             {
-                new Room { Name = "Room One", Description = "A single room.", Price = 100, Capacity = 1, IsBooked = false, RoomTypeId = 1 },
-                new Room { Name = "Room Two", Description = "A double room.", Price = 200, Capacity = 2, IsBooked = false, RoomTypeId = 2 },
-                new Room { Name = "Room Three", Description = "A single room.", Price = 100, Capacity = 1, IsBooked = false, RoomTypeId = 1 },
-                new Room { Name = "Room Four", Description = "A double room.", Price = 200, Capacity = 2, IsBooked = false,  RoomTypeId = 3 }
+                new Room { Name = "Room One", Description = "A single room.", Price = 100, Capacity = 1, IsBooked = false, BedCount = 1, RoomTypeId = 1 },
+                new Room { Name = "Room Two", Description = "A double room.", Price = 200, Capacity = 2, IsBooked = false, BedCount = 2, RoomTypeId = 2 },
+                new Room { Name = "Room Three", Description = "A single room.", Price = 100, Capacity = 1, IsBooked = false, BedCount = 1, RoomTypeId = 1 },
+                new Room { Name = "Room Four", Description = "A double room.", Price = 200, Capacity = 2, IsBooked = false, BedCount = 3,  RoomTypeId = 3 }
             };
             var foods = new[]
             {
@@ -96,7 +96,8 @@ namespace HotelBookingApp.Data
             //add foodhotels to hotels
             foreach (var hotel in hotels)
             {
-                hotel.FoodHotels.ToList().AddRange(foodHotels.Where(fh => fh.HotelId == hotel.Id));
+                hotel.HotelFoods.ToList().AddRange(foodHotels.Where(fh => fh.HotelId == hotel.Id));
+
             }
 
             foreach (var roomType in roomTypes)
@@ -120,7 +121,7 @@ namespace HotelBookingApp.Data
             //add roomhotels to hotels
             foreach (var hotel in hotels)
             {
-                hotel.RoomHotels.ToList().AddRange(roomHotels.Where(rh => rh.HotelId == hotel.Id));
+                hotel.HotelRooms.ToList().AddRange(roomHotels.Where(rh => rh.HotelId == hotel.Id));
             }
 
             context.RoomHotels.AddRange(roomHotels);

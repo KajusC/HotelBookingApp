@@ -15,6 +15,7 @@ public class OrderRepository : GeneralRepository<Order> , IOrderRepository
     {
         return await _dbSet
             .Include(o => o.RoomOrders)
+            .ThenInclude(o => o.Room)
             .Include(o => o.FoodOrders)
             .ToListAsync();
     }
@@ -23,8 +24,8 @@ public class OrderRepository : GeneralRepository<Order> , IOrderRepository
     {
         return await _dbSet
             .Include(o => o.RoomOrders)
+            .ThenInclude(o => o.Room)
             .Include(o => o.FoodOrders)
-            .FirstOrDefaultAsync(o => o.Id == id);
+            .FirstOrDefaultAsync(o => o.Id == id) ?? throw new ArgumentException("Order with this id does not exist");
     }
-
 }

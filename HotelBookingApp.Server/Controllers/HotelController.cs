@@ -28,6 +28,7 @@ public class HotelController : ControllerBase
         }
         else
         {
+            countryOrCity = countryOrCity.ToLower();
             var hotels = await _hotelService.GetHotelByCountryOrCity(countryOrCity);
             return Ok(hotels);
         }

@@ -12,9 +12,10 @@ public class Hotel : BaseEntity
     public string Email { get; set; }
     public string Website { get; set; }
     public string Description { get; set; }
+    public double Rating { get; set; }
     public string ImageUrl { get; set; }
 
-    public ICollection<FoodHotel> FoodHotels { get; set; } = new List<FoodHotel>();
+    public ICollection<FoodHotel> HotelFoods { get; set; } = new List<FoodHotel>();
     public ICollection<Order> Orders { get; set; } = new List<Order>();
-    public ICollection<RoomHotel> RoomHotels { get; set; } = new List<RoomHotel>();
+    public ICollection<RoomHotel> HotelRooms { get; set; } = new List<RoomHotel>();
 }

@@ -25,7 +25,7 @@ public class UserRepository : IUserRepository
     public async Task<User> GetByIdAsync(int id)
     {
 
-        return (await _customerSet.Include(i => i.Orders).FirstOrDefaultAsync(x => x.Id == id));
+        return await _customerSet.Include(i => i.Orders).FirstOrDefaultAsync(x => x.Id == id) ?? throw new ArgumentException("User with this id does not exist");
     }
 
     public async Task<bool> AddAsync(User entity)

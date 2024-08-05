@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./TitleCover.module.css";
 import PictureCarousel from "./PictureCarousel"; // Adjust the import path as needed
 
 const imageLinks = [
@@ -10,18 +9,20 @@ const imageLinks = [
 ];
 
 export default function TitleCover() {
-    return (
-      <article className={styles.article}>
-        <PictureCarousel links={imageLinks} showControls={false}/>
-        <div className={styles.content}>
-          <h1 className={styles.header}>Travel your way</h1>
-          <h2 className={styles.subheader}>
-            Find the best places to travel and explore the world
-          </h2>
-          <h3 className={`${styles.contentText} pt-5`}>
-            With Hootboot
-          </h3>
-        </div>
-      </article>
-    );
-  }
+  return (
+    <article className="relative w-full overflow-hidden text-white">
+      <PictureCarousel links={imageLinks} showControls={false} className="absolute inset-0 w-full h-full object-cover" />
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-4 md:px-8 py-5 md:py-8 text-shadow-md">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 md:mb-4 text-center">
+          Travel your way
+        </h1>
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-2 md:mb-4 text-center">
+          Find the best places to travel and explore the world
+        </h2>
+        <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl pt-3 md:pt-5 text-center">
+          With Hootboot
+        </h3>
+      </div>
+    </article>
+  );
+}

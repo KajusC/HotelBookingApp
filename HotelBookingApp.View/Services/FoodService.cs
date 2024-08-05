@@ -88,7 +88,7 @@ public class FoodService : IFoodService
             Hotel = hotel,
         };
 
-        hotel.FoodHotels.Add(foodHotel);
+        hotel.HotelFoods.Add(foodHotel);
         await _hotelRepository.UpdateAsync(hotel);
 
         food.FoodHotels.Add(foodHotel);

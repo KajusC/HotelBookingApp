@@ -125,7 +125,7 @@ public class RoomService : IRoomService
             Hotel = hotel,
         };
 
-        hotel.RoomHotels.Add(roomHotel);
+        hotel.HotelRooms.Add(roomHotel);
         await _hotelRepository.UpdateAsync(hotel);
 
         room.RoomHotels.Add(roomHotel);

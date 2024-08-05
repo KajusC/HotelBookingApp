@@ -13,19 +13,32 @@ public class HotelRepository : GeneralRepository<Hotel>, IHotelRepository
 
     public override async Task<IEnumerable<Hotel>> GetAllAsync()
     {
-        return await _dbSet
-            .Include(h => h.RoomHotels)
-            .Include(h => h.FoodHotels)
+        var hotels = await _dbSet
+            .Include(h => h.HotelRooms)
+            .ThenInclude(r => r.Room)
+            .Include(h => h.HotelRooms)
+            .Include(h => h.HotelFoods)
             .Include(h => h.Orders)
             .ToListAsync();
+
+        foreach (var hotel in hotels)
+        {
+            hotel.Name = hotel.Name.ToLower();
+            hotel.Address = hotel.Address.ToLower();
+            hotel.City = hotel.City.ToLower();
+            hotel.Country = hotel.Country.ToLower();
+        }
+        return hotels;
     }
 
     public override async Task<Hotel> GetByIdAsync(int id)
     {
         return await _dbSet
-            .Include(h => h.RoomHotels)
-            .Include(h => h.FoodHotels)
+            .Include(h => h.HotelRooms)
+            .ThenInclude(r => r.Room)
+            .Include(h => h.HotelRooms)
+            .Include(h => h.HotelFoods)
             .Include(h => h.Orders)
-            .FirstOrDefaultAsync(h => h.Id == id);
+            .FirstOrDefaultAsync(h => h.Id == id) ?? throw new ArgumentException("Hotel with this id does not exist");
     }
 }

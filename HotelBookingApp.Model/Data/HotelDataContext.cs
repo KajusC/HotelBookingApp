@@ -58,6 +58,7 @@ namespace HotelBookingApp.Data.Data
                 .HasOne(fo => fo.Food)
                 .WithMany(f => f.FoodOrders)
                 .HasForeignKey(fo => fo.FoodId);
+
             modelBuilder.Entity<FoodOrder>()
                 .HasOne(fo => fo.Order)
                 .WithMany(o => o.FoodOrders)
@@ -67,17 +68,33 @@ namespace HotelBookingApp.Data.Data
                 .HasOne(fh => fh.Food)
                 .WithMany(f => f.FoodHotels)
                 .HasForeignKey(fh => fh.FoodId);
+
             modelBuilder.Entity<FoodHotel>()
                 .HasOne(fh => fh.Hotel)
-                .WithMany(h => h.FoodHotels)
+                .WithMany(h => h.HotelFoods)
                 .HasForeignKey(fh => fh.HotelId);
 
+            modelBuilder.Entity<RoomHotel>()
+                .HasOne(ro => ro.Room)
+                .WithMany(r => r.RoomHotels)
+                .HasForeignKey(ro => ro.RoomId);
+
+            modelBuilder.Entity<RoomHotel>()
+                .HasOne(ro => ro.Hotel)
+                .WithMany(h => h.HotelRooms)
+                .HasForeignKey(ro => ro.HotelId);
+
+            modelBuilder.Entity<Room>()
+                .HasMany(r => r.RoomHotels)
+                .WithOne(ro => ro.Room)
+                .HasForeignKey(ro => ro.RoomId);
 
 
             modelBuilder.Entity<RoomOrder>()
                 .HasOne(ro => ro.Room)
                 .WithMany(r => r.RoomOrders)
                 .HasForeignKey(ro => ro.RoomId);
+
             modelBuilder.Entity<RoomOrder>()
                 .HasOne(ro => ro.Order)
                 .WithMany(o => o.RoomOrders)

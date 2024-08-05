@@ -19,6 +19,7 @@ const picture = [
 
 export default function App() {
   const [hotels, setHotels] = useState([]);
+  const [error, setError] = useState(null);
   const [searches, setSearches] = useState({
     countryOrCity: " ",
     checkIn: " ",
@@ -28,14 +29,19 @@ export default function App() {
 
   function handleSearch(searches) {
     setSearches(searches);
-    console.log(searches);
   }
 
   useEffect(() => {
-    const query = searches.countryOrCity;
-    getHotelByCountryOrCity(query).then((data) => {
-      setHotels(data);
-    });
+    const query = searches.countryOrCity.toLowerCase();
+
+
+      getHotelByCountryOrCity(query).then((data) => {
+        setHotels(data);
+        setError(null);
+      }).catch((error) => {
+        setError(error.message);
+      });
+
   }, [searches.countryOrCity]);
 
   const SearchTemplateCtx = {
@@ -57,22 +63,22 @@ export default function App() {
             path="/bookings"
             element={
               <div className="d-flex justify-content-center row-cols-2">
-                <HorizontalSlider title={"Best deals"} id="bottom">
+                <HorizontalSlider title="" id="bottom">
+                  {error && <p>{error}</p>}
                   {hotels.map((hotel, index) => {
-                    console.log(hotel);
-                    return(
-                    <DisplayCard
-                      key={index}
-                      hotelName={hotel.name}
-                      // rating={hotel.rating} 
-                      hotelAddress={ `${hotel.city}, ${hotel.country}` }
-                      // pricing={hotel.price}
-                      // beds={hotel.beds}
-                      // guests={hotel.guests}
-                      pictureUrl={[hotel.imageUrl]}
-                      show
-                    />
-                  )
+                    return (
+                      <DisplayCard
+                        key={index}
+                        hotelName={hotel.name}
+                        rating={hotel.rating}
+                        hotelAddress={`${hotel.city}, ${hotel.country}`}
+                        pricing={hotel.averagePrice}
+                        beds={`${hotel.minBedCount} - ${hotel.maxBedCount}`}
+                        guests={`${hotel.minGuestCount} - ${hotel.maxGuestCount}`}
+                        pictureUrl={[hotel.imageUrl]}
+                        show
+                      />
+                    );
                   })}
                 </HorizontalSlider>
               </div>
