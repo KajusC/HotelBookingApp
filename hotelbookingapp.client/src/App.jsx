@@ -1,49 +1,101 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+import "./App.css";
 
-function App() {
-    const [forecasts, setForecasts] = useState();
+import Navbar from "./Components/Navbar.jsx";
+import SearchBar from "./Components/SearchBar.jsx";
+import DisplayCard from "./Components/DisplayCard.jsx";
+import SearchWindow from "./Components/SearchWindow.jsx";
+import HorizontalSlider from "./Components/HorizontalSlider.jsx";
+import TitleCover from "./Components/TitleCover.jsx";
+import HotelDetails from "./pages/HotelDetails.jsx";
 
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
+import { Route, Routes } from "react-router-dom";
+import { getHotelByCountryOrCity } from "./functions/api.js";
+import { useEffect, useState } from "react";
+import { SearchContext } from "./contexts/search-context.jsx";
+import Footer from "./Components/Footer.jsx";
 
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
+const picture = [
+  "https://images.pexels.com/photos/5371575/pexels-photo-5371575.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+];
 
-    return (
-        <div>
-            <h1 id="tableLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-        </div>
-    );
-    
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        const data = await response.json();
-        setForecasts(data);
-    }
+export default function App() {
+  const [hotels, setHotels] = useState([]);
+  const [selectedHotelId, setSelectedHotelId] = useState();
+  const [error, setError] = useState(null);
+  const [searches, setSearches] = useState({
+    countryOrCity: " ",
+    checkIn: " ",
+    checkOut: " ",
+    guests: 0,
+  });
+
+  function handleSearch(searches) {
+    setSearches(searches);
+  }
+
+  useEffect(() => {
+    const query = searches.countryOrCity.toLowerCase();
+
+    getHotelByCountryOrCity(query)
+      .then((data) => {
+        setHotels(data);
+        setError(null);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  }, [searches.countryOrCity]);
+
+  const SearchTemplateCtx = {
+    countryOrCity: searches.countryOrCity,
+    checkIn: searches.checkIn,
+    checkOut: searches.checkOut,
+    guests: searches.guests,
+    handleSearch: handleSearch,
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <main className="flex-grow">
+        <SearchContext.Provider value={SearchTemplateCtx}>
+          <SearchWindow SearchBar={SearchBar} />
+          <Routes>
+            <Route path="/" element={<TitleCover />} />
+            <Route path="/" element={<TitleCover />} />
+            <Route
+              path="/bookings"
+              element={
+                <div className="flex justify-center items-center">
+                  <HorizontalSlider title="" id="bottom">
+                    {error && <p>{error}</p>}
+                    <h2 className="grid sm:grid-cols-1 md:grid-cols-4 gap-4 justify-items-center">
+                      {hotels.map((hotel, index) => (
+                        <DisplayCard
+                          key={hotel.id}
+                          id={hotel.id}
+                          hotelName={hotel.name}
+                          rating={hotel.rating}
+                          hotelAddress={`${hotel.city}, ${hotel.country}`}
+                          pricing={hotel.averagePrice}
+                          beds={`${hotel.minBedCount} - ${hotel.maxBedCount}`}
+                          guests={`${hotel.minGuestCount} - ${hotel.maxGuestCount}`}
+                          pictureUrl={[hotel.imageUrl]}
+                          show
+                        />
+                      ))}
+                    </h2>
+                  </HorizontalSlider>
+                </div>
+              }
+            />
+
+            <Route path="/bookings/hotel/:hotelId" element={<HotelDetails />} />
+          </Routes>
+        </SearchContext.Provider>
+      </main>
+      <Footer />
+    </div>
+  );
 }
-
-export default App;

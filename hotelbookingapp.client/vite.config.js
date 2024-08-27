@@ -37,21 +37,23 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 export default defineConfig({
     plugins: [plugin()],
     resolve: {
-        alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url))
-        }
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url))
+      }
     },
     server: {
-        proxy: {
-            '^/weatherforecast': {
-                target,
-                secure: false
-            }
-        },
-        port: 5173,
-        https: {
-            key: fs.readFileSync(keyFilePath),
-            cert: fs.readFileSync(certFilePath),
+      proxy: {
+        '/api/Hotel': {
+          target: 'https://192.168.88.44:7103', // Your API server URL
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/api\/Hotel/, '/api/Hotel'),
         }
+      },
+      port: 5173,
+      https: {
+        key: fs.readFileSync(keyFilePath),
+        cert: fs.readFileSync(certFilePath),
+      },
     }
-})
+  });

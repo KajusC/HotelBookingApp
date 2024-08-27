@@ -2,7 +2,7 @@
 
 namespace HotelBookingApp.Business.Interfaces;
 
-public interface IOrderService : ICrud<OrderModel>
+public interface IOrderService : ICrud<OrderDto>
 {
-    public Task<IEnumerable<OrderModel>> GetOrdersByCustomerId(int customerId);
+    public Task<IEnumerable<OrderDto>> GetOrdersByCustomerId(int customerId);
 }

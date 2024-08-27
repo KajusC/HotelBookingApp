@@ -3,7 +3,7 @@ using HotelBookingApp.Data.Entities.ManyToMany;
 
 namespace HotelBookingApp.Business.DTO;
 
-public class HotelModel
+public class HotelDto
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -14,7 +14,13 @@ public class HotelModel
     public string Email { get; set; }
     public string Website { get; set; }
     public string Description { get; set; }
+    public double Rating { get; set; }
     public string ImageUrl { get; set; }
+    public int MinBedCount { get; set; }
+    public int MaxBedCount { get; set; }
+    public int minGuestCount { get; set; }
+    public int maxGuestCount { get; set; }
+    public double AveragePrice { get; set; }
 
     public ICollection<int> RoomHotelIds { get; set; } = new List<int>();
     public ICollection<int> FoodHotelIds { get; set; } = new List<int>();

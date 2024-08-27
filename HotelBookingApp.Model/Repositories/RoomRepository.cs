@@ -15,6 +15,7 @@ public class RoomRepository : GeneralRepository<Room>, IRoomRepository
     {
         return await _dbSet
             .Include(h => h.RoomHotels)
+            .ThenInclude(h => h.Hotel)
             .Include(r => r.RoomOrders)
             .ToListAsync();
     }
@@ -22,7 +23,8 @@ public class RoomRepository : GeneralRepository<Room>, IRoomRepository
     {
         return await _dbSet
             .Include(h => h.RoomHotels)
+            .ThenInclude(h => h.Hotel)
             .Include(r => r.RoomOrders)
-            .FirstOrDefaultAsync(r => r.Id == id);
+            .FirstOrDefaultAsync(r => r.Id == id) ?? throw new ArgumentException("Room with this id does not exist");
     }
 }

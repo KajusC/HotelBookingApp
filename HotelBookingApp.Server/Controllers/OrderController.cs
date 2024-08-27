@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HotelBookingApp.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
@@ -24,14 +24,14 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<OrderModel>>> GetOrders()
+    public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
     {
         var orders = await _orderService.GetAllAsync();
         return Ok(orders);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<OrderModel>> GetOrderById(int id)
+    public async Task<ActionResult<OrderDto>> GetOrderById(int id)
     {
         var order = await _orderService.GetByIdAsync(id);
         if (order == null)
@@ -42,7 +42,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddOrder([FromBody] OrderModel order, [FromQuery] int foodId = 0, [FromQuery] int roomId = 0)
+    public async Task<ActionResult> AddOrder([FromBody] OrderDto order, [FromQuery] int foodId = 0, [FromQuery] int roomId = 0)
     {
         if (order == null)
         {
@@ -68,7 +68,7 @@ public class OrderController : ControllerBase
 
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> EditOrder(int id, [FromBody] OrderModel order)
+    public async Task<ActionResult> EditOrder(int id, [FromBody] OrderDto order)
     {
         if (order == null)
         {
@@ -98,7 +98,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet("customer/{customerId}")]
-    public async Task<ActionResult<IEnumerable<OrderModel>>> GetOrdersByCustomerId(int customerId)
+    public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrdersByCustomerId(int customerId)
     {
         var orders = await _orderService.GetOrdersByCustomerId(customerId);
         return Ok(orders);

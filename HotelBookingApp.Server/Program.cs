@@ -22,9 +22,8 @@ namespace HotelBookingApp.Server
 
             builder.Services.AddCors();
 
-            // Add services to the container.
             builder.Services.AddDbContext<HotelDataContext>(options =>
-                options.UseInMemoryDatabase("HotelBookingContext"));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("HotelBookingApp.Server")));
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddHttpClient();

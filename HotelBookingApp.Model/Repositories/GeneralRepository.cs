@@ -27,7 +27,7 @@ public class GeneralRepository<TEntity> : IRepository<TEntity> where TEntity : B
 
     public virtual async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        return await _dbSet.SingleOrDefaultAsync(predicate);
+        return await _dbSet.SingleOrDefaultAsync(predicate) ?? throw new ArgumentException("Entity with this predicate does not exist");
     }
 
     public virtual async Task AddAsync(TEntity entity)

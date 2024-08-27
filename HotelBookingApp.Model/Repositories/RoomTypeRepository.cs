@@ -22,6 +22,6 @@ public class RoomTypeRepository : GeneralRepository<RoomType>, IRoomTypeReposito
     {
         return await _dbSet
             .Include(rt => rt.Rooms)
-            .FirstOrDefaultAsync(rt => rt.Id == id);
+            .FirstOrDefaultAsync(rt => rt.Id == id) ?? throw new ArgumentException("RoomType with this id does not exist");
     }
 }
