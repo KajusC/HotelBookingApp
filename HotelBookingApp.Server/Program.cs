@@ -8,9 +8,11 @@ using HotelBookingApp.Data.Interfaces;
 using HotelBookingApp.Data.Entities;
 using HotelBookingApp.Data.Interfaces.ManyToMany;
 using HotelBookingApp.Data.Repositories;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore; // Add this using directive
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
 
 namespace HotelBookingApp.Server
 {
@@ -20,10 +22,66 @@ namespace HotelBookingApp.Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var Configuration = builder.Configuration;
+
             builder.Services.AddCors();
 
             builder.Services.AddDbContext<HotelDataContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("HotelBookingApp.Server")));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("HotelBookingApp.Server")));
+            builder.Services.AddDbContext<UserDataContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("HotelBookingApp.Server")));
+
+            builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 8;
+            })
+            .AddEntityFrameworkStores<UserDataContext>()
+            .AddDefaultTokenProviders();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Ensure HTTPS
+                options.Cookie.SameSite = SameSiteMode.Strict; // CSRF protection
+                options.LoginPath = "/user/login";
+                options.LogoutPath = "/user/logout";
+                options.AccessDeniedPath = "/user/accessdenied";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+            })
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        // Extract the token from the cookie
+                        context.Token = context.Request.Cookies["authToken"];
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddHttpClient();
@@ -48,8 +106,6 @@ namespace HotelBookingApp.Server
             builder.Services.AddLogging();
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
-
-
 
             builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 
@@ -80,17 +136,14 @@ namespace HotelBookingApp.Server
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
             app.MapFallbackToFile("/index.html");
 
             app.Run();
-
-
-
         }
 
     }

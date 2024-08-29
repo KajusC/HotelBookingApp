@@ -1,16 +1,16 @@
 ﻿using HotelBookingApp.Business.DTO.ManyToMany;
 using HotelBookingApp.Business.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBookingApp.Server.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ManagementController : ControllerBase
     {
-
         private readonly IFoodService _foodService;
         private readonly IRoomService _roomService;
 

@@ -51,7 +51,6 @@ public class AutoMapperConfig : Profile
             .ReverseMap();
         CreateMap<User, UserDto>()
             .ForMember(dest => dest.OrderIds, opt => opt.MapFrom(src => src.Orders.Select(i => i.Id)))
-            .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
 
             .ReverseMap();
 

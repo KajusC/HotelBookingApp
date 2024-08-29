@@ -8,10 +8,10 @@ namespace HotelBookingApp.Data.Repositories;
 public class UserRepository : IUserRepository
 {
     private readonly DbSet<User> _customerSet;
-    private readonly HotelDataContext _context;
+    private readonly UserDataContext _context;
 
 
-    public UserRepository(HotelDataContext dataContext)
+    public UserRepository(UserDataContext dataContext)
     {
         _context = dataContext;
         _customerSet = dataContext.Users;
@@ -24,7 +24,6 @@ public class UserRepository : IUserRepository
 
     public async Task<User> GetByIdAsync(int id)
     {
-
         return await _customerSet.Include(i => i.Orders).FirstOrDefaultAsync(x => x.Id == id) ?? throw new ArgumentException("User with this id does not exist");
     }
 

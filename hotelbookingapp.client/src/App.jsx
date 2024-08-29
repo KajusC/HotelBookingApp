@@ -13,6 +13,8 @@ import { getHotelByCountryOrCity } from "./functions/api.js";
 import { useEffect, useState } from "react";
 import { SearchContext } from "./contexts/search-context.jsx";
 import Footer from "./Components/Footer.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
 
 const picture = [
   "https://images.pexels.com/photos/5371575/pexels-photo-5371575.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -60,13 +62,20 @@ export default function App() {
       <Navbar />
       <main className="flex-grow">
         <SearchContext.Provider value={SearchTemplateCtx}>
-          <SearchWindow SearchBar={SearchBar} />
+          
           <Routes>
-            <Route path="/" element={<TitleCover />} />
-            <Route path="/" element={<TitleCover />} />
+            <Route path="/" element={
+              <>
+              <SearchWindow SearchBar={SearchBar} />
+              <TitleCover />
+              </>
+            } 
+              />
             <Route
               path="/bookings"
               element={
+                <>
+                <SearchWindow SearchBar={SearchBar} />
                 <div className="flex justify-center items-center">
                   <HorizontalSlider title="" id="bottom">
                     {error && <p>{error}</p>}
@@ -83,15 +92,19 @@ export default function App() {
                           guests={`${hotel.minGuestCount} - ${hotel.maxGuestCount}`}
                           pictureUrl={[hotel.imageUrl]}
                           show
-                        />
-                      ))}
+                          />
+                        ))}
                     </h2>
                   </HorizontalSlider>
                 </div>
+                        </>
               }
             />
 
             <Route path="/bookings/hotel/:hotelId" element={<HotelDetails />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </SearchContext.Provider>
       </main>

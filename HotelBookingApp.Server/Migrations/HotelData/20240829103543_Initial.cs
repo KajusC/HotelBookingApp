@@ -4,10 +4,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace HotelBookingApp.Server.Migrations
+namespace HotelBookingApp.Server.Migrations.HotelData
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,29 +64,31 @@ namespace HotelBookingApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
+                    UserName = table.Column<string>(type: "text", nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "text", nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: true),
                     SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    LockoutEndDateUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false),
-                    UserName = table.Column<string>(type: "text", nullable: true)
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -141,64 +143,6 @@ namespace HotelBookingApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityUserClaim",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId1 = table.Column<int>(type: "integer", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: true),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IdentityUserClaim", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_IdentityUserClaim_Users_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "IdentityUserLogin<string>",
-                columns: table => new
-                {
-                    LoginProvider = table.Column<string>(type: "text", nullable: true),
-                    ProviderKey = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: true),
-                    Discriminator = table.Column<string>(type: "character varying(34)", maxLength: 34, nullable: false),
-                    UserId1 = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.ForeignKey(
-                        name: "FK_IdentityUserLogin<string>_Users_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "IdentityUserRole<string>",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(type: "text", nullable: true),
-                    RoleId = table.Column<string>(type: "text", nullable: true),
-                    Discriminator = table.Column<string>(type: "character varying(34)", maxLength: 34, nullable: false),
-                    UserId1 = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.ForeignKey(
-                        name: "FK_IdentityUserRole<string>_Users_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -222,9 +166,9 @@ namespace HotelBookingApp.Server.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Orders_Users_CustomerId",
+                        name: "FK_Orders_User_CustomerId",
                         column: x => x.CustomerId,
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -328,21 +272,6 @@ namespace HotelBookingApp.Server.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IdentityUserClaim_UserId1",
-                table: "IdentityUserClaim",
-                column: "UserId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_IdentityUserLogin<string>_UserId1",
-                table: "IdentityUserLogin<string>",
-                column: "UserId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_IdentityUserRole<string>_UserId1",
-                table: "IdentityUserRole<string>",
-                column: "UserId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Orders_CustomerId",
                 table: "Orders",
                 column: "CustomerId");
@@ -388,15 +317,6 @@ namespace HotelBookingApp.Server.Migrations
                 name: "FoodOrders");
 
             migrationBuilder.DropTable(
-                name: "IdentityUserClaim");
-
-            migrationBuilder.DropTable(
-                name: "IdentityUserLogin<string>");
-
-            migrationBuilder.DropTable(
-                name: "IdentityUserRole<string>");
-
-            migrationBuilder.DropTable(
                 name: "RoomHotels");
 
             migrationBuilder.DropTable(
@@ -415,7 +335,7 @@ namespace HotelBookingApp.Server.Migrations
                 name: "Hotels");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "RoomTypes");

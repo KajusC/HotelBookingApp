@@ -3,20 +3,17 @@ using System;
 using HotelBookingApp.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace HotelBookingApp.Server.Migrations
+namespace HotelBookingApp.Server.Migrations.HotelData
 {
     [DbContext(typeof(HotelDataContext))]
-    [Migration("20240827204151_first")]
-    partial class first
+    partial class HotelDataContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,6 +299,9 @@ namespace HotelBookingApp.Server.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("text");
+
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
@@ -319,11 +319,13 @@ namespace HotelBookingApp.Server.Migrations
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime?>("LockoutEndDateUtc")
+                    b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("NormalizedUserName")
                         .HasColumnType("text");
 
                     b.Property<string>("PasswordHash")
@@ -346,101 +348,7 @@ namespace HotelBookingApp.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("IdentityUserClaim");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(34)
-                        .HasColumnType("character varying(34)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.ToTable("IdentityUserLogin<string>");
-
-                    b.HasDiscriminator().HasValue("IdentityUserLogin<string>");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(34)
-                        .HasColumnType("character varying(34)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.ToTable("IdentityUserRole<string>");
-
-                    b.HasDiscriminator().HasValue("IdentityUserRole<string>");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserLogin", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNet.Identity.EntityFramework.IdentityUserLogin<string>");
-
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("integer");
-
-                    b.HasIndex("UserId1");
-
-                    b.HasDiscriminator().HasValue("IdentityUserLogin");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole<string>");
-
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("integer");
-
-                    b.HasIndex("UserId1");
-
-                    b.HasDiscriminator().HasValue("IdentityUserRole");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("HotelBookingApp.Data.Entities.ManyToMany.FoodHotel", b =>
@@ -549,27 +457,6 @@ namespace HotelBookingApp.Server.Migrations
                     b.Navigation("RoomType");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim", b =>
-                {
-                    b.HasOne("HotelBookingApp.Data.Entities.User", null)
-                        .WithMany("Claims")
-                        .HasForeignKey("UserId1");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserLogin", b =>
-                {
-                    b.HasOne("HotelBookingApp.Data.Entities.User", null)
-                        .WithMany("Logins")
-                        .HasForeignKey("UserId1");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole", b =>
-                {
-                    b.HasOne("HotelBookingApp.Data.Entities.User", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("UserId1");
-                });
-
             modelBuilder.Entity("HotelBookingApp.Data.Entities.Food", b =>
                 {
                     b.Navigation("FoodHotels");
@@ -607,13 +494,7 @@ namespace HotelBookingApp.Server.Migrations
 
             modelBuilder.Entity("HotelBookingApp.Data.Entities.User", b =>
                 {
-                    b.Navigation("Claims");
-
-                    b.Navigation("Logins");
-
                     b.Navigation("Orders");
-
-                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

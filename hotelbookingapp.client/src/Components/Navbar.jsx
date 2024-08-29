@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import logo from "../assets/o.png";
 import { IoMenu } from "react-icons/io5";
 import { IoLocationSharp } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
@@ -15,12 +16,15 @@ function Navbar() {
         <p className="ml-5 text-xl font-bold font-mono">HootBoot</p>
       </div>
       <div className="hidden md:flex items-center space-x-4">
-        <a className="mx-3 login navbar-collapse " href="#">
-          Log in
-        </a>
-        <a className="mx-3 signup navbar-collapse align-items-sm-end" href="#">
+        <Link to="/login" className="mx-3 login navbar-collapse ">
+          Login
+        </Link>
+        <Link
+          to="/register"
+          className="mx-3 signup navbar-collapse align-items-sm-end"
+        >
           Register
-        </a>
+        </Link>
       </div>
       <div className="md:hidden">
         <IoMenu size="30" />

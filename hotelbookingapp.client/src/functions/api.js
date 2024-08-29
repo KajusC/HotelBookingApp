@@ -20,3 +20,8 @@ export const getHotelById = async (hotelId) => {
   const response = (await api.get(`/hotel/${hotelId}`));
   return response.data;
 }
+
+export async function postUserRegister(user) {
+  const response = (await api.post("/User/", user));
+  return response.data;
+};
