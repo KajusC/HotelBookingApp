@@ -1,18 +1,17 @@
-using System.Text;
 using HotelBookingApp.Business;
 using HotelBookingApp.Business.Interfaces;
 using HotelBookingApp.Business.Services;
-using HotelBookingApp.Data;
 using HotelBookingApp.Data.Data;
-using HotelBookingApp.Data.Interfaces;
 using HotelBookingApp.Data.Entities;
+using HotelBookingApp.Data.Interfaces;
 using HotelBookingApp.Data.Interfaces.ManyToMany;
 using HotelBookingApp.Data.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace HotelBookingApp.Server
 {
@@ -27,9 +26,9 @@ namespace HotelBookingApp.Server
             builder.Services.AddCors();
 
             builder.Services.AddDbContext<HotelDataContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("HotelBookingApp.Server")));
+                options.UseNpgsql(Configuration.GetConnectionString("HotelConnection"), b => b.MigrationsAssembly("HotelBookingApp.Server")));
             builder.Services.AddDbContext<UserDataContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("HotelBookingApp.Server")));
+                options.UseNpgsql(Configuration.GetConnectionString("UserConnection"), b => b.MigrationsAssembly("HotelBookingApp.Server")));
 
             builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
             {
@@ -81,6 +80,8 @@ namespace HotelBookingApp.Server
                     }
                 };
             });
+
+            builder.Services.AddScoped<ITokenService, TokenService>(provider => new TokenService(Configuration["Jwt:Key"], Configuration["Jwt:Issuer"], Configuration["Jwt:Audience"]));
 
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

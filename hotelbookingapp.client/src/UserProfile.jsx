@@ -57,7 +57,7 @@ function UserProfile() {
     };
 
     return (
-        <div className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center bg-[#D6CFCB]">
             <h2>User Info</h2>
             <select className="form-select w-25" aria-label="Select User" onChange={(e) => handleSelectUser(e.target.value)}>
                 <option selected disabled>Who are you?</option>

@@ -1,4 +1,5 @@
-﻿using HotelBookingApp.Data.Entities;
+﻿using HotelBookingApp.Business.Interfaces;
+using HotelBookingApp.Data.Entities;
 using HotelBookingApp.Server.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -17,12 +18,14 @@ namespace HotelBookingApp.Server.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _config;
+        private readonly ITokenService _tokenService;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config)
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _config = config;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
@@ -74,6 +77,13 @@ namespace HotelBookingApp.Server.Controllers
             return Ok();
         }
 
+        [HttpPost("Validate")]
+        public async Task<IActionResult> Verify([FromQuery] string token)
+        {
+            var isValid = await _tokenService.ValidateToken(token);
+            return Ok(isValid);
+
+        }
         private async Task<string> GenerateJwtToken(User user)
         {
             var claims = new List<Claim>

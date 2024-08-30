@@ -41,8 +41,4 @@
     <ProjectReference Include="..\HotelBookingApp.View\HotelBookingApp.Business.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

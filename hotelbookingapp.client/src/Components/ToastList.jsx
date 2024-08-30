@@ -14,7 +14,7 @@ export default function ToastList({ toasts, removeToast }) {
   return (
     <div
       id="toast-bottom-right"
-      class="fixed flex flex-col gap-4 justify-center items-center w-full max-w-xs p-4 space-x-4 text-gray-500 divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg right-5 bottom-5"
+      className="fixed flex flex-col gap-4 justify-center items-center w-full max-w-xs p-4 space-x-4 text-gray-500 divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg right-5 bottom-5"
       role="alert"
     >
       {toasts.map((toast) => (

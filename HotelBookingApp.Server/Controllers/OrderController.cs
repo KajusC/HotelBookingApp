@@ -58,6 +58,7 @@ public class OrderController : ControllerBase
             return Ok();
         }
         var orderList = await _orderService.GetAllAsync();
+
         var last = orderList.MaxBy(o => o.Id).Id;
 
         await _foodService.JoinFoodWithOrder(foodId, last);

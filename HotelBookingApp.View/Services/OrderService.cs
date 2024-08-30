@@ -57,6 +57,6 @@ public class OrderService : IOrderService
     public async Task<IEnumerable<OrderDto>> GetOrdersByCustomerId(int customerId)
     {
         var orders = await _orderRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<OrderDto>>(orders.Where(o => o.CustomerId == customerId));
+        return _mapper.Map<IEnumerable<OrderDto>>(orders.Where(o => o.UserId == customerId));
     }
 }

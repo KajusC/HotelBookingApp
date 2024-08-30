@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace HotelBookingApp.Server.Migrations.HotelData
+namespace HotelBookingApp.Server.Migrations
 {
     [DbContext(typeof(HotelDataContext))]
-    [Migration("20240829103543_Initial")]
-    partial class Initial
+    [Migration("20240830104012_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -211,9 +211,6 @@ namespace HotelBookingApp.Server.Migrations.HotelData
                     b.Property<DateTime>("CheckOutDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("HotelId")
                         .HasColumnType("integer");
 
@@ -227,11 +224,14 @@ namespace HotelBookingApp.Server.Migrations.HotelData
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
-
                     b.HasIndex("HotelId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -432,15 +432,15 @@ namespace HotelBookingApp.Server.Migrations.HotelData
 
             modelBuilder.Entity("HotelBookingApp.Data.Entities.Order", b =>
                 {
-                    b.HasOne("HotelBookingApp.Data.Entities.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HotelBookingApp.Data.Entities.Hotel", "Hotel")
                         .WithMany("Orders")
                         .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HotelBookingApp.Data.Entities.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

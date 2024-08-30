@@ -53,13 +53,11 @@ export default function RegisterPage() {
         
         
       const userData = {
-        id: 0,
         username: usernameRef.current.value,
         firstName: firstNameRef.current.value,
         lastName: lastNameRef.current.value,
         email: emailRef.current.value,
         password: passwordRef.current.value,
-        orderIds: [0],
       };
       console.log(userData);
 

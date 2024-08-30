@@ -12,7 +12,7 @@ public class Order : BaseEntity
     public string Status { get; set; }
     public int HotelId { get; set; }
     public Hotel Hotel { get; set; }
-    public int CustomerId { get; set; }
+    public int UserId { get; set; }
     public User User { get; set; }
     public ICollection<FoodOrder> FoodOrders { get; set; } = new List<FoodOrder>();
     public ICollection<RoomOrder> RoomOrders { get; set; } = new List<RoomOrder>();

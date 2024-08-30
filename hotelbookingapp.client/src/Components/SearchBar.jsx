@@ -38,7 +38,7 @@ function SearchBar() {
   const isInBookings = location.pathname === "/bookings";
 
   return (
-    <div className="w-full md:w-3/4 mx-auto">
+    <div className="w-full md:w-3/4 mx-auto pt-10">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:flex items-center mb-3">
         <InputGroup className="w-full sm:w-3/4 md:w-auto">
           <InputGroup.Text className="p-3">

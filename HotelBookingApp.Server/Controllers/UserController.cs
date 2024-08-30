@@ -1,8 +1,15 @@
-﻿using HotelBookingApp.Business.DTO;
-using HotelBookingApp.Business.Interfaces;
-using HotelBookingApp.Data.Interfaces;
+﻿using HotelBookingApp.Business.Interfaces;
 using HotelBookingApp.Data.Entities;
+using HotelBookingApp.Server.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Data.Entity;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
 
 namespace HotelBookingApp.Server.Controllers;
 
@@ -10,61 +17,49 @@ namespace HotelBookingApp.Server.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly IUserService _userService;
-    private readonly ILogger _logger;
+    private readonly UserManager<User> _userManager;
 
-    public UserController(IUserService userService, ILogger<UserController> logger)
+    public UserController(UserManager<User> userManager)
     {
-        _userService = userService;
-        _logger = logger;
+        _userManager = userManager;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetCustomers()
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAllUsers()
     {
-        var customers = await _userService.GetAllAsync();
-        return Ok(customers);
+        var users = await _userManager.Users.ToListAsync();
+
+        var userDtos = users.Select(user => new
+        {
+            user.Id,
+            user.UserName,
+            user.FirstName,
+            user.LastName,
+            user.Email,
+        });
+
+        return Ok(userDtos);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserDto>> GetCustomerById(int id)
+    public async Task<IActionResult> GetUserById(int id)
     {
-        var customer = await _userService.GetByIdAsync(id);
-        if (customer == null)
-        {
-            _logger.LogWarning($"User with id {id} not found");
-            return NotFound();
-        }
-        return Ok(customer);
-    }
+        var user = await _userManager.FindByIdAsync(id.ToString());
 
-    [HttpPost]
-    public async Task<ActionResult> AddCustomer([FromBody] UserDto model)
-    {
-        await _userService.AddAsync(model);
-        return Ok(model);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateCustomer(int id, [FromBody] UserDto model)
-    {
-        var customer = await _userService.GetByIdAsync(id);
-        if (customer == null)
+        if (user == null)
         {
-            _logger.LogWarning($"User with id {id} not found");
             return NotFound();
         }
 
-        model.Id = id;
+        var userDto = new
+        {
+            user.Id,
+            user.UserName,
+            user.FirstName,
+            user.LastName,
+            user.Email,
+        };
 
-        // Use the existing entity in the update service method
-        await _userService.UpdateAsync(customer);
-        return Ok();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task Delete(int id)
-    {
-        await _userService.DeleteAsync(id);
+        return Ok(userDto);
     }
 }

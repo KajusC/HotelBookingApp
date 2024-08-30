@@ -7,14 +7,16 @@ import SearchWindow from "./Components/SearchWindow.jsx";
 import HorizontalSlider from "./Components/HorizontalSlider.jsx";
 import TitleCover from "./Components/TitleCover.jsx";
 import HotelDetails from "./pages/HotelDetails.jsx";
+import ProtectedRoute from "./Components/ProtectedRoute.jsx";
+import Footer from "./Components/Footer.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
 
 import { Route, Routes } from "react-router-dom";
 import { getHotelByCountryOrCity } from "./functions/api.js";
 import { useEffect, useState } from "react";
 import { SearchContext } from "./contexts/search-context.jsx";
-import Footer from "./Components/Footer.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import RegisterPage from "./pages/RegisterPage.jsx";
+import UserPanel from "./pages/UserPanel.jsx";
 
 const picture = [
   "https://images.pexels.com/photos/5371575/pexels-photo-5371575.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -62,48 +64,52 @@ export default function App() {
       <Navbar />
       <main className="flex-grow">
         <SearchContext.Provider value={SearchTemplateCtx}>
-          
           <Routes>
-            <Route path="/" element={
-              <>
-              <SearchWindow SearchBar={SearchBar} />
-              <TitleCover />
-              </>
-            } 
-              />
+            <Route
+              path="/"
+              element={
+                <>
+                  <SearchWindow SearchBar={SearchBar} />
+                  <TitleCover />
+                </>
+              }
+            />
             <Route
               path="/bookings"
               element={
                 <>
-                <SearchWindow SearchBar={SearchBar} />
-                <div className="flex justify-center items-center">
-                  <HorizontalSlider title="" id="bottom">
-                    {error && <p>{error}</p>}
-                    <h2 className="grid sm:grid-cols-1 md:grid-cols-4 gap-4 justify-items-center">
-                      {hotels.map((hotel, index) => (
-                        <DisplayCard
-                          key={hotel.id}
-                          id={hotel.id}
-                          hotelName={hotel.name}
-                          rating={hotel.rating}
-                          hotelAddress={`${hotel.city}, ${hotel.country}`}
-                          pricing={hotel.averagePrice}
-                          beds={`${hotel.minBedCount} - ${hotel.maxBedCount}`}
-                          guests={`${hotel.minGuestCount} - ${hotel.maxGuestCount}`}
-                          pictureUrl={[hotel.imageUrl]}
-                          show
+                  <SearchWindow SearchBar={SearchBar} />
+                  <div className="flex justify-center items-center">
+                    <HorizontalSlider title="" id="bottom">
+                      {error && <p>{error}</p>}
+                      <h2 className="grid sm:grid-cols-1 md:grid-cols-4 gap-4 justify-items-center">
+                        {hotels.map((hotel, index) => (
+                          <DisplayCard
+                            key={hotel.id}
+                            id={hotel.id}
+                            hotelName={hotel.name}
+                            rating={hotel.rating}
+                            hotelAddress={`${hotel.city}, ${hotel.country}`}
+                            pricing={hotel.averagePrice}
+                            beds={`${hotel.minBedCount} - ${hotel.maxBedCount}`}
+                            guests={`${hotel.minGuestCount} - ${hotel.maxGuestCount}`}
+                            pictureUrl={[hotel.imageUrl]}
+                            show
                           />
                         ))}
-                    </h2>
-                  </HorizontalSlider>
-                </div>
-                        </>
+                      </h2>
+                    </HorizontalSlider>
+                  </div>
+                </>
               }
             />
 
             <Route path="/bookings/hotel/:hotelId" element={<HotelDetails />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/profile" element={<UserPanel />} />
+            </Route>
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </SearchContext.Provider>
