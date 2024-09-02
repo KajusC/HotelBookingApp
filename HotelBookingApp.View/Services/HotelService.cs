@@ -3,6 +3,7 @@ using HotelBookingApp.Business.DTO;
 using HotelBookingApp.Business.Interfaces;
 using HotelBookingApp.Data.Entities;
 using HotelBookingApp.Data.Interfaces;
+using Microsoft.AspNet.Identity;
 using Microsoft.Extensions.Logging;
 
 namespace HotelBookingApp.Business.Services;
@@ -14,6 +15,7 @@ public class HotelService : IHotelService
     private readonly ILogger<HotelDto> _logger;
 
     private readonly IHotelRepository _hotelRepository;
+    private readonly IUserRepository _userRepository;
 
     public HotelService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<HotelDto> logger)
     {
@@ -21,6 +23,7 @@ public class HotelService : IHotelService
         _mapper = mapper;
         _logger = logger;
         _hotelRepository = unitOfWork.HotelRepository;
+        _userRepository = unitOfWork.UserRepository;
     }
 
     public async Task<IEnumerable<HotelDto>> GetAllAsync()
@@ -56,6 +59,22 @@ public class HotelService : IHotelService
     public async Task AddAsync(HotelDto model)
     {
         var entity = _mapper.Map<Hotel>(model);
+
+        if (entity.UserId != null)
+        {
+            int userId = (int)entity.UserId;
+
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user == null)
+            {
+                throw new ArgumentException("User with this id does not exist");
+            }
+            
+            user.HotelId = entity.Id;
+            user.Hotel = entity;
+            await _userRepository.UpdateAsync(user);
+        }
+
         await _hotelRepository.AddAsync(entity);
     }
 
@@ -124,6 +143,20 @@ public class HotelService : IHotelService
 
         return mapped;
     }
+
+    public async Task<HotelDto> GetHotelByUserId(int userId)
+    {
+        var entity = await _hotelRepository.GetHotelByUserId(userId);
+        var mapped = _mapper.Map<HotelDto>(entity);
+
+        mapped.MinBedCount = await GetMinBedCount(mapped.Id);
+        mapped.MaxBedCount = await GetMaxBedCount(mapped.Id);
+        mapped.minGuestCount = await GetMinGuestCount(mapped.Id);
+        mapped.maxGuestCount = await GetMaxGuestCount(mapped.Id);
+        mapped.AveragePrice = await GetAveragePrice(mapped.Id);
+        return mapped;
+    }
+
     private async Task<int> GetMinGuestCount(int hotelId)
     {
         var hotel = await _hotelRepository.GetByIdAsync(hotelId);
@@ -131,8 +164,10 @@ public class HotelService : IHotelService
         {
             return 0;
         }
+
         return hotel.HotelRooms.Min(rh => rh.Room.Capacity);
     }
+
     private async Task<int> GetMaxGuestCount(int hotelId)
     {
         var hotel = await _hotelRepository.GetByIdAsync(hotelId);
@@ -140,8 +175,10 @@ public class HotelService : IHotelService
         {
             return 0;
         }
+
         return hotel.HotelRooms.Max(rh => rh.Room.Capacity);
     }
+
     private async Task<int> GetMinBedCount(int hotelId)
     {
         var hotel = await _hotelRepository.GetByIdAsync(hotelId);
@@ -149,8 +186,10 @@ public class HotelService : IHotelService
         {
             return 0;
         }
+
         return hotel.HotelRooms.Min(rh => rh.Room.BedCount);
     }
+
     private async Task<int> GetMaxBedCount(int hotelId)
     {
         var hotel = await _hotelRepository.GetByIdAsync(hotelId);
@@ -158,8 +197,10 @@ public class HotelService : IHotelService
         {
             return 0;
         }
+
         return hotel.HotelRooms.Max(rh => rh.Room.BedCount);
     }
+
     public async Task<double> GetAveragePrice(int hotelId)
     {
         var hotel = await _hotelRepository.GetByIdAsync(hotelId);
@@ -167,6 +208,7 @@ public class HotelService : IHotelService
         {
             return 0;
         }
+
         return hotel.HotelRooms.Average(rh => rh.Room.Price);
     }
 }

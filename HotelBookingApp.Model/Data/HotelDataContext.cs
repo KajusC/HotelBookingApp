@@ -90,6 +90,12 @@ namespace HotelBookingApp.Data.Data
                 .HasMany(h => h.Orders)
                 .WithOne(o => o.Hotel)
                 .HasForeignKey(o => o.HotelId);
+
+            modelBuilder.Entity<Hotel>()
+                .HasOne(o => o.User)
+                .WithOne(o => o.Hotel)
+                .HasForeignKey<User>(o => o.HotelId)
+                .IsRequired(false);
         }
     }
 }

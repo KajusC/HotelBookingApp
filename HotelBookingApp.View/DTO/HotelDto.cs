@@ -16,6 +16,7 @@ public class HotelDto
     public string Description { get; set; }
     public double Rating { get; set; }
     public string ImageUrl { get; set; }
+    public int? UserId { get; set; }
     public int MinBedCount { get; set; }
     public int MaxBedCount { get; set; }
     public int minGuestCount { get; set; }

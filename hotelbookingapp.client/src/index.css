@@ -47,6 +47,10 @@ body, html, #root {
     text-decoration: none;
     font-family: 'Roboto';
 }
+.no-decoration
+{
+    text-decoration: none;
+}
 a.signup
 {
     color: white;

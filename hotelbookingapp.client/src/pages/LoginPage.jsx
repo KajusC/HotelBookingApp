@@ -19,7 +19,7 @@ export default function LoginPage() {
       const timer = setTimeout(() => {
         navigate('/');
         window.location.reload();
-      }, 2000);
+      }, 1000);
 
       return () => clearTimeout(timer);
     }

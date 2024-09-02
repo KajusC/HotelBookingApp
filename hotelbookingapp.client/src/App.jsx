@@ -17,6 +17,8 @@ import { getHotelByCountryOrCity } from "./functions/api.js";
 import { useEffect, useState } from "react";
 import { SearchContext } from "./contexts/search-context.jsx";
 import UserPanel from "./pages/UserPanel.jsx";
+import UploadHotel from "./pages/UploadHotel.jsx";
+import ManageHotel from "./pages/ManageHotel.jsx";
 
 const picture = [
   "https://images.pexels.com/photos/5371575/pexels-photo-5371575.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -82,7 +84,7 @@ export default function App() {
                   <div className="flex justify-center items-center">
                     <HorizontalSlider title="" id="bottom">
                       {error && <p>{error}</p>}
-                      <h2 className="grid sm:grid-cols-1 md:grid-cols-4 gap-4 justify-items-center">
+                      <h2 className="grid sm:grid-cols-1 md:grid-cols-4 gap-4 justify-items-center p-5">
                         {hotels.map((hotel, index) => (
                           <DisplayCard
                             key={hotel.id}
@@ -109,6 +111,8 @@ export default function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/profile" element={<UserPanel />} />
+              <Route path="/create-hotel/:userId" element={<UploadHotel />} />
+              <Route path="/manage-hotel/:userId" element={<ManageHotel />} />
             </Route>
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>

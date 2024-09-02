@@ -20,3 +20,25 @@ input[type="text"]:not(:placeholder-shown) ~ .input-text{
     @apply overflow-y-auto;
   }
 }
+
+.no-decoration {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:focus {
+    text-decoration: none;
+  }
+
+  &:active {
+    text-decoration: none;
+  }
+
+  &:visited {
+    text-decoration: none;
+  }
+
+  
+}

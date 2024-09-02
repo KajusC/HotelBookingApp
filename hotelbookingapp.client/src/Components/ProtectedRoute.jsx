@@ -4,25 +4,25 @@ import { verifyToken } from '../functions/api';
 import Cookies from 'js-cookie';
 
 export default function ProtectedRoute() {
-  const [isAuthenticated, setIsAuthenticated] = useState(null); // Initial state
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
     const token = Cookies.get('token');
     if (token) {
       verifyToken(token)
         .then(response => {
-          setIsAuthenticated(response); // Set based on verification
+          setIsAuthenticated(response);
         })
         .catch(() => {
-          setIsAuthenticated(false); // Handle errors by setting false
+          setIsAuthenticated(false);
         });
     } else {
-      setIsAuthenticated(false); // No token, not authenticated
+      setIsAuthenticated(false);
     }
   }, []);
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>; // While loading
+    return <div>Loading...</div>;
   }
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;

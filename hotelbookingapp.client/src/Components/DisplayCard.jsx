@@ -18,9 +18,9 @@ export default function DisplayCard({
   ],
 }) {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col w-80 h-full md:w-70 mx-auto mb-4">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col w-80 h-full md:w-70 mx-auto fb-4 transition duration-500 hover:shadow-transparen hover:scale-105">
       <PictureCarousel links={pictureUrl} showControls={true} isCard='true' />
-      <div className="p-4 flex flex-col">
+      <div className="p-4 flex flex-col  transition-all">
         <div className="flex justify-between mb-4">
           <h5 className="text-xl font-bold">{hotelName}</h5>
           <div className="flex items-center">

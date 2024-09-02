@@ -45,6 +45,18 @@ public class HotelController : ControllerBase
         }
         return Ok(hotel);
     }
+    
+    [HttpGet("user/{userId}")]
+    public async Task<ActionResult<HotelDto>> GetHotelByUserId(int userId)
+    {
+        var hotel = await _hotelService.GetHotelByUserId(userId);
+        if (hotel == null)
+        {
+            _logger.LogWarning($"Hotel with user id {userId} not found");
+            return NotFound();
+        }
+        return Ok(hotel);
+    }
 
     [HttpPost]
     public async Task<ActionResult> AddHotel([FromBody] HotelDto hotel)

@@ -1,8 +1,8 @@
 import React from "react";
+import openInNewTab from "../functions/openTab";
 import { FaFacebook } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
-import openInNewTab from "../functions/openTab";
 
 const rickRoll = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 

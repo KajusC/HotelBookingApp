@@ -15,6 +15,8 @@ public class Hotel : BaseEntity
     public double Rating { get; set; }
     public string ImageUrl { get; set; }
 
+    public int? UserId { get; set; }
+    public User? User { get; set; }
     public ICollection<FoodHotel> HotelFoods { get; set; } = new List<FoodHotel>();
     public ICollection<Order> Orders { get; set; } = new List<Order>();
     public ICollection<RoomHotel> HotelRooms { get; set; } = new List<RoomHotel>();

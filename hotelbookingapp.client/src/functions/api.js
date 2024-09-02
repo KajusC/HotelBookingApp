@@ -80,3 +80,8 @@ export async function getUserInfo(id) {
   const response = (await api.get(`/User/${id}`));
   return response.data;
 }
+
+export async function getIfUserHasHotel(id) {
+  const response = (await api.get(`/User/hasHotel/${id}`));
+  return response.data;
+}

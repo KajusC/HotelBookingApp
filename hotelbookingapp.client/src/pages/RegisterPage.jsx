@@ -1,11 +1,11 @@
 import React, {useRef, useState} from "react";
+import { postUserRegister } from "../functions/api";
+import {validateName, validateLastName, validateEmail, validatePassword} from "../functions/Validation";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-import { postUserRegister } from "../functions/api";
 import ToastList from "../Components/ToastList.jsx";
-import {validateName, validateLastName, validateEmail, validatePassword} from "../functions/Validation";
 
 export default function RegisterPage() {
     const [toastList, setToastList] = useState([]);

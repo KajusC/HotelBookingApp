@@ -1,48 +1,46 @@
 ﻿using HotelBookingApp.Data.Data;
 using HotelBookingApp.Data.Interfaces;
 using HotelBookingApp.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBookingApp.Data.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private readonly DbSet<User> _customerSet;
-    private readonly UserDataContext _context;
+    private readonly UserManager<User> _userManager;
 
-
-    public UserRepository(UserDataContext dataContext)
+    public UserRepository(UserManager<User> userManager)
     {
-        _context = dataContext;
-        _customerSet = dataContext.Users;
+        _userManager = userManager;
     }
 
     public async Task<IEnumerable<User>> GetAllAsync()
     {
-        return await _customerSet.Include(i => i.Orders).ToListAsync();
+        return await _userManager.Users.ToListAsync();
     }
 
     public async Task<User> GetByIdAsync(int id)
     {
-        return await _customerSet.Include(i => i.Orders).FirstOrDefaultAsync(x => x.Id == id) ?? throw new ArgumentException("User with this id does not exist");
+        return await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id) ?? throw new ArgumentException("User with this id does not exist");
     }
 
     public async Task<bool> AddAsync(User entity)
     {
-        await _customerSet.AddAsync(entity);
-        return await _context.SaveChangesAsync() > 0;
+        var success = await _userManager.CreateAsync(entity);
+        return success.Succeeded;
     }
 
     public async Task<bool> UpdateAsync(User entity)
     {
-        _customerSet.Update(entity);
-        return await _context.SaveChangesAsync() > 0;
+       var success = await _userManager.UpdateAsync(entity);
+       return success.Succeeded;
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
         var customer = await GetByIdAsync(id);
-        _customerSet.Remove(customer);
-        return await _context.SaveChangesAsync() > 0;
+        var success = await _userManager.DeleteAsync(customer);
+        return success.Succeeded;
     }
 }

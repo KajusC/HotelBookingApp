@@ -7,6 +7,7 @@ namespace HotelBookingApp.Data.Repositories;
 
 public class HotelRepository : GeneralRepository<Hotel>, IHotelRepository
 {
+    
     public HotelRepository(HotelDataContext context) : base(context)
     {
     }
@@ -40,5 +41,16 @@ public class HotelRepository : GeneralRepository<Hotel>, IHotelRepository
             .Include(h => h.HotelFoods)
             .Include(h => h.Orders)
             .FirstOrDefaultAsync(h => h.Id == id) ?? throw new ArgumentException("Hotel with this id does not exist");
+    }
+
+    public async Task<Hotel> GetHotelByUserId(int id)
+    {
+        return await _dbSet
+            .Include(h => h.HotelRooms)
+            .ThenInclude(r => r.Room)
+            .Include(h => h.HotelRooms)
+            .Include(h => h.HotelFoods)
+            .Include(h => h.Orders)
+            .FirstOrDefaultAsync(h => h.UserId == id) ?? throw new ArgumentException("Hotel with this user id does not exist");
     }
 }

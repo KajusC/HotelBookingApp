@@ -9,6 +9,7 @@ using System.Data.Entity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using HotelBookingApp.Business.DTO;
 
 
 namespace HotelBookingApp.Server.Controllers;
@@ -28,14 +29,17 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _userManager.Users.ToListAsync();
+        
+        
 
-        var userDtos = users.Select(user => new
+        var userDtos = users.Select(user => new UserDto
         {
-            user.Id,
-            user.UserName,
-            user.FirstName,
-            user.LastName,
-            user.Email,
+            Id = user.Id,
+            HotelId = user.HotelId,
+            Username = user.UserName,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
         });
 
         return Ok(userDtos);
@@ -51,15 +55,29 @@ public class UserController : ControllerBase
             return NotFound();
         }
 
-        var userDto = new
+        var userDto = new UserDto
         {
-            user.Id,
-            user.UserName,
-            user.FirstName,
-            user.LastName,
-            user.Email,
+            Id = user.Id,
+            HotelId = user.HotelId,
+            Username = user.UserName,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
         };
 
         return Ok(userDto);
+    }
+
+    [HttpGet("hasHotel/{id}")]
+    public async Task<IActionResult> GetUserHasHotel(int id)
+    {
+        var user = await _userManager.FindByIdAsync(id.ToString());
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(user.HotelId != null);
     }
 }
