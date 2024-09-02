@@ -40,19 +40,39 @@ $ https://github.com/KajusC/HotelBookingApp.git
 
 Program will run 2 consoles: API (for swagger UI), VITE
 
-To get data to the In-built database, seed data with this API call, or edit it from [Data Seed class](https://github.com/KajusC/HotelBookingApp/blob/master/HotelBookingApp.Server/Data/DBInitializer.cs)
-![image](https://github.com/KajusC/HotelBookingApp/assets/42713684/fea63dad-323b-4c98-9043-677d92780fbf)
+Website is being run on Postgres Database
+
+To enable the database, you have two contexts to update:
+```bash
+EntityFrameworkCore\Update-database -Context HotelDataContext
+
+EntityFrameworkCore\Update-database -Context UserDataContext
+```
 
 VITE console can show some signs of error, it might mean that bootstrap isnt installed with node package manager
 ```bash
 npm install bootstrap@v5.3.3
 ```
 
-Seeded UI: ![image](https://github.com/KajusC/HotelBookingApp/assets/42713684/93ab0a4b-b15b-4b34-8b7e-8c112715bf85)
+Main page: ![image](https://github.com/user-attachments/assets/ce1ad5de-0143-420b-ac8a-b7269f8a4750)
 
-Modal view of booking form: ![image](https://github.com/KajusC/HotelBookingApp/assets/42713684/c6d276c2-f256-47db-ab0b-b9b2d48de47f)
+After pressing search: ![image](https://github.com/user-attachments/assets/d0a8b919-ddee-410a-b470-50453860a7bd)
 
-Customer profile (simulated): ![image](https://github.com/KajusC/HotelBookingApp/assets/42713684/8df98966-4849-49dd-b10d-fe6430870e6f)
+Filtering (only location filter works): ![image](https://github.com/user-attachments/assets/f8821df0-6fd9-4ecc-bdcb-36e41178d110)
+
+Hotel info card: ![image](https://github.com/user-attachments/assets/7929b19f-cb86-45cd-bc4c-a8e8bcb71513)
+
+Log in Form: ![image](https://github.com/user-attachments/assets/328c513d-bc01-43fd-9ae6-e439cf1dd2eb)
+
+Register Form: ![image](https://github.com/user-attachments/assets/a39047e3-0cd6-4792-a713-cc8d7c786655)
+
+Successfull log in: ![image](https://github.com/user-attachments/assets/9ced1f27-3e48-465b-8c9e-8ba1f5d77713)
+
+Profile: ![image](https://github.com/user-attachments/assets/0341866b-97ac-4661-90aa-c524733ddbf3)
+
+Hotel addition form: ![image](https://github.com/user-attachments/assets/b37000c5-c87d-4ccb-b823-8483e779751c)
+
+T.B.A.
 
 feel free to check our other projects!
 
