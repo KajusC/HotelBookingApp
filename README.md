@@ -1,6 +1,14 @@
 # Hotel booking website
 
-A short description about the project and/or client.
+Website to book your favorite hotel.
+
+Front-end: React
+Back-end: .NET
+Authentication: JWT
+User management: Identity User
+Database: Postgres
+
+API made with REST
 
 ## Getting Started
 
